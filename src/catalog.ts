@@ -36,8 +36,18 @@ export function loadCatalog(text: string): Catalog {
         commit: requiredString(sourceValue.commit, `${at}.source.commit`),
       };
     } else throw new Error(`${at}.source.type unknown source type: ${sourceType}`);
-    const site = isRecord(value.site) ? { page: typeof value.site.page === 'string' ? value.site.page : undefined, readme: typeof value.site.readme === 'string' ? value.site.readme : undefined } : {};
-    return { id: requiredString(value.id, `${at}.id`), kind, install: requiredString(value.install, `${at}.install`), source, site };
+    const site = isRecord(value.site) ? {
+      page: typeof value.site.page === 'string' ? value.site.page : undefined,
+      readme: typeof value.site.readme === 'string' ? value.site.readme : undefined,
+      locales: isRecord(value.site.locales) ? {
+        en: typeof value.site.locales.en === 'string' ? value.site.locales.en : undefined,
+        nl: typeof value.site.locales.nl === 'string' ? value.site.locales.nl : undefined,
+      } : undefined,
+    } : {};
+    const installation = isRecord(value.installation) && typeof value.installation.fallback === 'string'
+      ? { fallback: value.installation.fallback }
+      : undefined;
+    return { id: requiredString(value.id, `${at}.id`), kind, install: requiredString(value.install, `${at}.install`), source, site, installation };
   });
   return { marketplace, entries };
 }
@@ -81,15 +91,15 @@ export function readCatalog(root = process.cwd()): Catalog {
   return loadCatalog(readFileSync(join(root, 'catalog.yml'), 'utf8'));
 }
 
-function manifest(catalog: Catalog) {
-  return { $schema: 'https://anthropic.com/claude-code/marketplace.schema.json', name: catalog.marketplace, owner: { name: 'AraneaDev' }, metadata: { description: 'Aranea first-party plugins and skills' }, plugins: catalog.entries.filter((entry) => entry.kind === 'plugin').map((entry) => ({ name: entry.install, source: { source: 'github', repo: (entry.source as GithubSource).repository, ref: (entry.source as GithubSource).commit } })) };
-}
-
 if (process.argv[1]?.endsWith('catalog.ts')) {
   const root = process.cwd();
   const catalog = readCatalog(root);
   const problems = validateCatalog(catalog, root);
   if (problems.length) { console.error(problems.join('\n')); process.exitCode = 1; }
-  else if (process.argv.includes('--generate')) { console.log(JSON.stringify(manifest(catalog), null, 2)); }
+  else if (process.argv.includes('--generate')) {
+    const { generateArtifacts } = await import('./generate.js');
+    generateArtifacts(catalog, root);
+    console.log(`Generated artifacts for ${catalog.entries.length} catalog entries.`);
+  }
   else console.log(`Validated ${catalog.entries.length} catalog entries.`);
 }

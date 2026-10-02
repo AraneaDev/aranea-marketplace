@@ -1,0 +1,280 @@
+{
+  "version": 1,
+  "marketplace": "aranea",
+  "marketplaceUrl": "https://github.com/AraneaDev/aranea-marketplace",
+  "entries": [
+    {
+      "id": "agent-config-audit",
+      "kind": "skill",
+      "install": "agent-config-audit",
+      "display": {
+        "page": "agent-config-audit",
+        "readme": "skills/agent-config-audit/SKILL.md"
+      },
+      "source": {
+        "type": "local",
+        "path": "skills/agent-config-audit"
+      },
+      "version": {},
+      "locales": {
+        "nl": "/skills/agent-config-audit",
+        "en": "/en/skills/agent-config-audit"
+      },
+      "installation": {
+        "marketplace": "claude plugin install agent-config-audit@aranea"
+      }
+    },
+    {
+      "id": "alpheus",
+      "kind": "plugin",
+      "install": "alpheus",
+      "display": {
+        "page": "alpheus",
+        "readme": "https://github.com/AraneaDev/alpheus#readme"
+      },
+      "source": {
+        "type": "github",
+        "repository": "AraneaDev/alpheus",
+        "commit": "d6958ba04e6aff488e522a40b4c3f30d37313553"
+      },
+      "version": {
+        "pin": "d6958ba04e6aff488e522a40b4c3f30d37313553"
+      },
+      "locales": {
+        "nl": "/tools/alpheus",
+        "en": "/en/tools/alpheus"
+      },
+      "installation": {
+        "marketplace": "claude plugin install alpheus@aranea"
+      }
+    },
+    {
+      "id": "ariadne",
+      "kind": "plugin",
+      "install": "ariadne",
+      "display": {
+        "page": "ariadne",
+        "readme": "https://github.com/AraneaDev/ariadne#readme"
+      },
+      "source": {
+        "type": "github",
+        "repository": "AraneaDev/ariadne",
+        "commit": "a35c0e0b9ac21f5211cb56a307e407d83c926ab5"
+      },
+      "version": {
+        "pin": "a35c0e0b9ac21f5211cb56a307e407d83c926ab5"
+      },
+      "locales": {
+        "nl": "/tools/ariadne",
+        "en": "/en/tools/ariadne"
+      },
+      "installation": {
+        "marketplace": "claude plugin install ariadne@aranea"
+      }
+    },
+    {
+      "id": "cassandra",
+      "kind": "plugin",
+      "install": "cassandra",
+      "display": {
+        "page": "cassandra",
+        "readme": "https://github.com/AraneaDev/cassandra#readme"
+      },
+      "source": {
+        "type": "github",
+        "repository": "AraneaDev/cassandra",
+        "commit": "23fc7c4d675ebb97ebb7d3da9a0659f26a6953f9"
+      },
+      "version": {
+        "pin": "23fc7c4d675ebb97ebb7d3da9a0659f26a6953f9"
+      },
+      "locales": {
+        "nl": "/tools/cassandra",
+        "en": "/en/tools/cassandra"
+      },
+      "installation": {
+        "marketplace": "claude plugin install cassandra@aranea"
+      }
+    },
+    {
+      "id": "claude-timestamp",
+      "kind": "plugin",
+      "install": "claude-timestamp",
+      "display": {
+        "page": "claude-timestamp",
+        "readme": "https://github.com/AraneaDev/claude-timestamp#readme"
+      },
+      "source": {
+        "type": "github",
+        "repository": "AraneaDev/claude-timestamp",
+        "commit": "8f9ce3a84a09882597aa767c7d4153c944b6466c"
+      },
+      "version": {
+        "pin": "8f9ce3a84a09882597aa767c7d4153c944b6466c"
+      },
+      "locales": {
+        "nl": "/tools/claude-timestamp",
+        "en": "/en/tools/claude-timestamp"
+      },
+      "installation": {
+        "marketplace": "claude plugin install claude-timestamp@aranea"
+      }
+    },
+    {
+      "id": "codebase-scorecard",
+      "kind": "skill",
+      "install": "codebase-scorecard",
+      "display": {
+        "page": "codebase-scorecard",
+        "readme": "skills/codebase-scorecard/SKILL.md"
+      },
+      "source": {
+        "type": "local",
+        "path": "skills/codebase-scorecard"
+      },
+      "version": {},
+      "locales": {
+        "nl": "/skills/codebase-scorecard",
+        "en": "/en/skills/codebase-scorecard"
+      },
+      "installation": {
+        "marketplace": "claude plugin install codebase-scorecard@aranea"
+      }
+    },
+    {
+      "id": "comprehensive-audit",
+      "kind": "skill",
+      "install": "comprehensive-audit",
+      "display": {
+        "page": "comprehensive-audit",
+        "readme": "skills/comprehensive-audit/SKILL.md"
+      },
+      "source": {
+        "type": "local",
+        "path": "skills/comprehensive-audit"
+      },
+      "version": {},
+      "locales": {
+        "nl": "/skills/comprehensive-audit",
+        "en": "/en/skills/comprehensive-audit"
+      },
+      "installation": {
+        "marketplace": "claude plugin install comprehensive-audit@aranea"
+      }
+    },
+    {
+      "id": "decompose",
+      "kind": "skill",
+      "install": "decompose",
+      "display": {
+        "page": "decompose",
+        "readme": "skills/decompose/SKILL.md"
+      },
+      "source": {
+        "type": "local",
+        "path": "skills/decompose"
+      },
+      "version": {},
+      "locales": {
+        "nl": "/skills/decompose",
+        "en": "/en/skills/decompose"
+      },
+      "installation": {
+        "marketplace": "claude plugin install decompose@aranea"
+      }
+    },
+    {
+      "id": "kairos",
+      "kind": "plugin",
+      "install": "kairos",
+      "display": {
+        "page": "kairos",
+        "readme": "https://github.com/AraneaDev/kairos#readme"
+      },
+      "source": {
+        "type": "github",
+        "repository": "AraneaDev/kairos",
+        "commit": "41a98954495ba9dff922f2c0f17e990f8bde0277"
+      },
+      "version": {
+        "pin": "41a98954495ba9dff922f2c0f17e990f8bde0277"
+      },
+      "locales": {
+        "nl": "/tools/kairos",
+        "en": "/en/tools/kairos"
+      },
+      "installation": {
+        "marketplace": "claude plugin install kairos@aranea"
+      }
+    },
+    {
+      "id": "kanon",
+      "kind": "plugin",
+      "install": "kanon",
+      "display": {
+        "page": "kanon",
+        "readme": "https://github.com/AraneaDev/kanon#readme"
+      },
+      "source": {
+        "type": "github",
+        "repository": "AraneaDev/kanon",
+        "commit": "7c6caf525247a5c54b739606c369afead35137a7"
+      },
+      "version": {
+        "pin": "7c6caf525247a5c54b739606c369afead35137a7"
+      },
+      "locales": {
+        "nl": "/tools/kanon",
+        "en": "/en/tools/kanon"
+      },
+      "installation": {
+        "marketplace": "claude plugin install kanon@aranea"
+      }
+    },
+    {
+      "id": "minos",
+      "kind": "plugin",
+      "install": "minos",
+      "display": {
+        "page": "minos",
+        "readme": "https://github.com/AraneaDev/minos#readme"
+      },
+      "source": {
+        "type": "github",
+        "repository": "AraneaDev/minos",
+        "commit": "8dcc9981035572293e4ac4ee654b33123bd0e4ed"
+      },
+      "version": {
+        "pin": "8dcc9981035572293e4ac4ee654b33123bd0e4ed"
+      },
+      "locales": {
+        "nl": "/tools/minos",
+        "en": "/en/tools/minos"
+      },
+      "installation": {
+        "marketplace": "claude plugin install minos@aranea"
+      }
+    },
+    {
+      "id": "security-audit",
+      "kind": "skill",
+      "install": "security-audit",
+      "display": {
+        "page": "security-audit",
+        "readme": "skills/security-audit/SKILL.md"
+      },
+      "source": {
+        "type": "local",
+        "path": "skills/security-audit"
+      },
+      "version": {},
+      "locales": {
+        "nl": "/skills/security-audit",
+        "en": "/en/skills/security-audit"
+      },
+      "installation": {
+        "marketplace": "claude plugin install security-audit@aranea"
+      }
+    }
+  ]
+}
