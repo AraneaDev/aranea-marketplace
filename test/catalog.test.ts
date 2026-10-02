@@ -54,4 +54,37 @@ describe('validateCatalog', () => {
     const problems = validateCatalog(mutate(valid(), root), root);
     expect(problems.join('\n')).toMatch(pattern);
   });
+
+  it('rejects a local source that escapes the entry skill directory', () => {
+    root = mkdtempSync(join(tmpdir(), 'aranea-marketplace-'));
+    writeFileSync(join(root, 'README.md'), '# readme');
+    mkdirSync(join(root, 'skills/other-skill'), { recursive: true });
+    writeFileSync(join(root, 'skills/other-skill/SKILL.md'), '# other skill');
+    const catalog = valid();
+    catalog.entries[0].source = { type: 'local', path: 'skills/local-skill/../other-skill' };
+    const problems = validateCatalog(catalog, root);
+    expect(problems.join('\n')).toMatch(/local-skill.*source\.path/);
+  });
+
+  it('rejects a skill backed by GitHub so generation cannot receive plugin-only fields', () => {
+    root = mkdtempSync(join(tmpdir(), 'aranea-marketplace-'));
+    writeFileSync(join(root, 'README.md'), '# readme');
+    mkdirSync(join(root, 'skills/local-skill'), { recursive: true });
+    writeFileSync(join(root, 'skills/local-skill/SKILL.md'), '# skill');
+    const catalog = valid();
+    catalog.entries[0].source = { type: 'github', repository: 'AraneaDev/example', commit: '0123456789abcdef0123456789abcdef01234567' };
+    const problems = validateCatalog(catalog, root);
+    expect(problems.join('\n')).toMatch(/local-skill.*kind.*local/);
+  });
+
+  it('rejects a plugin backed by a local skill', () => {
+    root = mkdtempSync(join(tmpdir(), 'aranea-marketplace-'));
+    writeFileSync(join(root, 'README.md'), '# readme');
+    mkdirSync(join(root, 'skills/local-skill'), { recursive: true });
+    writeFileSync(join(root, 'skills/local-skill/SKILL.md'), '# skill');
+    const catalog = valid();
+    catalog.entries[1].source = { type: 'local', path: 'skills/local-skill' };
+    const problems = validateCatalog(catalog, root);
+    expect(problems.join('\n')).toMatch(/github-plugin.*kind.*github/);
+  });
 });

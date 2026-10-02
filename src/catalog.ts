@@ -53,6 +53,8 @@ export function validateCatalog(catalog: Catalog, root: string): ValidationProbl
     if (!/^[a-z0-9][a-z0-9-]*$/.test(entry.install)) problems.push(`${entry.id}.install must be lowercase kebab-case`);
     if (!entry.site.page) problems.push(`${entry.id}.site.page is missing`);
     if (!entry.site.readme) problems.push(`${entry.id}.site.readme is missing`);
+    if (entry.kind === 'skill' && entry.source.type !== 'local') problems.push(`${entry.id}.kind skill requires local source`);
+    if (entry.kind === 'plugin' && entry.source.type !== 'github') problems.push(`${entry.id}.kind plugin requires github source`);
     if (entry.source.type === 'local') validateLocal(entry, root, problems);
     else validateGithub(entry, problems);
   }
@@ -61,6 +63,8 @@ export function validateCatalog(catalog: Catalog, root: string): ValidationProbl
 
 function validateLocal(entry: CatalogEntry, root: string, problems: string[]) {
   const source = entry.source as LocalSource;
+  const expectedPath = `skills/${entry.id}`;
+  if (source.path !== expectedPath) problems.push(`${entry.id}.source.path must be ${expectedPath}: ${source.path}`);
   const skillFile = join(root, source.path, 'SKILL.md');
   if (!existsSync(skillFile)) problems.push(`${entry.id}.source.path missing SKILL.md: ${source.path}`);
   if (entry.site.readme && !/^https?:\/\//.test(entry.site.readme) && !existsSync(resolve(root, entry.site.readme))) problems.push(`${entry.id}.site.readme target does not exist: ${entry.site.readme}`);
