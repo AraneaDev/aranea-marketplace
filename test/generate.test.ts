@@ -93,4 +93,22 @@ describe('catalog generation', () => {
       rmSync(root, { recursive: true, force: true });
     }
   });
+
+  it('uses the explicit contract fixture to reject extra and malformed shapes', () => {
+    const root = mkdtempSync(join(tmpdir(), 'aranea-manifest-contract-'));
+    try {
+      const manifest = generateMarketplace(catalog);
+      expect(validateMarketplaceManifest({ ...manifest, extra: true }, root).join('\n')).toMatch(/top-level property.*extra/);
+      expect(validateMarketplaceManifest({
+        ...manifest,
+        plugins: [{ name: 'zeta', source: { source: 'github', repo: 'AraneaDev/zeta', ref: '0123456789abcdef0123456789abcdef01234567', extra: true } }],
+      }, root).join('\n')).toMatch(/source has unexpected/);
+      expect(validateMarketplaceManifest({
+        ...manifest,
+        plugins: [{ name: 'alpha', source: './plugins/alpha/skills/alpha' }],
+      }, root).join('\n')).toMatch(/plugin\.json|SKILL\.md/);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
 });

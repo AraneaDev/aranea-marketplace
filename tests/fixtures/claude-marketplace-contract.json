@@ -1,0 +1,24 @@
+{
+  "schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "topLevelRequired": ["$schema", "name", "owner", "metadata", "plugins"],
+  "topLevelProperties": ["$schema", "name", "owner", "metadata", "plugins"],
+  "ownerRequired": ["name"],
+  "ownerProperties": ["name"],
+  "metadataRequired": ["description"],
+  "metadataProperties": ["description"],
+  "pluginRequired": ["name", "source"],
+  "pluginProperties": ["name", "source"],
+  "localSource": {
+    "pathPattern": "^\\./.+$",
+    "metadataPath": ".claude-plugin/plugin.json",
+    "metadataRequired": ["name", "description", "version"],
+    "skillPath": "skills/{name}/SKILL.md"
+  },
+  "githubSource": {
+    "required": ["source", "repo", "ref"],
+    "properties": ["source", "repo", "ref"],
+    "source": "github",
+    "repoPattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$",
+    "refPattern": "^[0-9a-f]{40}$"
+  }
+}

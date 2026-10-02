@@ -9,6 +9,21 @@ export const MARKETPLACE_URL = 'https://github.com/AraneaDev/aranea-marketplace'
 export const MANIFEST_URL = 'https://raw.githubusercontent.com/AraneaDev/aranea-marketplace/main/generated/marketplace.json';
 export const FEED_URL = 'https://raw.githubusercontent.com/AraneaDev/aranea-marketplace/main/generated/site-feed.json';
 const CLAUDE_SCHEMA = 'https://anthropic.com/claude-code/marketplace.schema.json';
+type MarketplaceContract = {
+  schema: string;
+  topLevelRequired: string[];
+  topLevelProperties: string[];
+  ownerRequired: string[];
+  ownerProperties: string[];
+  metadataRequired: string[];
+  metadataProperties: string[];
+  pluginRequired: string[];
+  pluginProperties: string[];
+  localSource: { pathPattern: string; metadataPath: string; metadataRequired: string[]; skillPath: string };
+  githubSource: { required: string[]; properties: string[]; source: string; repoPattern: string; refPattern: string };
+};
+
+const contract = (): MarketplaceContract => JSON.parse(readFileSync(join(process.cwd(), 'tests/fixtures/claude-marketplace-contract.json'), 'utf8')) as MarketplaceContract;
 
 const ordered = (catalog: Catalog): CatalogEntry[] => [...catalog.entries].sort((a, b) => a.id.localeCompare(b.id));
 
@@ -63,47 +78,66 @@ export function generateSiteFeed(catalog: Catalog): SiteFeed {
 }
 
 export function validateMarketplaceManifest(manifest: unknown, root: string): string[] {
+  const specification = contract();
   const problems: string[] = [];
   if (!manifest || typeof manifest !== 'object' || Array.isArray(manifest)) return ['manifest must be an object'];
   const value = manifest as Record<string, unknown>;
-  if (value.$schema !== CLAUDE_SCHEMA) problems.push('manifest.$schema is invalid');
+  for (const field of specification.topLevelRequired) if (!(field in value)) problems.push(`manifest.${field} is required`);
+  for (const field of Object.keys(value)) if (!specification.topLevelProperties.includes(field)) problems.push(`manifest has unexpected top-level property ${field}`);
+  if (value.$schema !== specification.schema) problems.push('manifest.$schema is invalid');
   if (typeof value.name !== 'string' || value.name === '') problems.push('manifest.name must be a non-empty string');
   const owner = value.owner;
-  if (!owner || typeof owner !== 'object' || Array.isArray(owner) || typeof (owner as Record<string, unknown>).name !== 'string') problems.push('manifest.owner.name is required');
+  if (!owner || typeof owner !== 'object' || Array.isArray(owner)) problems.push('manifest.owner must be an object');
+  else {
+    const ownerValue = owner as Record<string, unknown>;
+    for (const field of specification.ownerRequired) if (!(field in ownerValue)) problems.push(`manifest.owner.${field} is required`);
+    for (const field of Object.keys(ownerValue)) if (!specification.ownerProperties.includes(field)) problems.push(`manifest.owner has unexpected property ${field}`);
+    if (typeof ownerValue.name !== 'string' || ownerValue.name === '') problems.push('manifest.owner.name is required');
+  }
   const metadata = value.metadata;
-  if (!metadata || typeof metadata !== 'object' || Array.isArray(metadata) || typeof (metadata as Record<string, unknown>).description !== 'string') problems.push('manifest.metadata.description is required');
+  if (!metadata || typeof metadata !== 'object' || Array.isArray(metadata)) problems.push('manifest.metadata must be an object');
+  else {
+    const metadataValue = metadata as Record<string, unknown>;
+    for (const field of specification.metadataRequired) if (!(field in metadataValue)) problems.push(`manifest.metadata.${field} is required`);
+    for (const field of Object.keys(metadataValue)) if (!specification.metadataProperties.includes(field)) problems.push(`manifest.metadata has unexpected property ${field}`);
+    if (typeof metadataValue.description !== 'string' || metadataValue.description === '') problems.push('manifest.metadata.description is required');
+  }
   if (!Array.isArray(value.plugins)) return [...problems, 'manifest.plugins must be an array'];
   const names = new Set<string>();
   for (const [index, plugin] of value.plugins.entries()) {
-    const at = `manifest.plugins[${index}]`;
-    if (!plugin || typeof plugin !== 'object' || Array.isArray(plugin)) { problems.push(`${at} must be an object`); continue; }
+    const location = `manifest.plugins[${index}]`;
+    if (!plugin || typeof plugin !== 'object' || Array.isArray(plugin)) { problems.push(`${location} must be an object`); continue; }
     const item = plugin as Record<string, unknown>;
-    if (typeof item.name !== 'string' || item.name === '') problems.push(`${at}.name is required`);
-    else if (names.has(item.name)) problems.push(`${at}.name duplicates ${item.name}`);
+    for (const field of specification.pluginRequired) if (!(field in item)) problems.push(`${location}.${field} is required`);
+    for (const field of Object.keys(item)) if (!specification.pluginProperties.includes(field)) problems.push(`${location} has unexpected property ${field}`);
+    if (typeof item.name !== 'string' || item.name === '') problems.push(`${location}.name is required`);
+    else if (names.has(item.name)) problems.push(`${location}.name duplicates ${item.name}`);
     else names.add(item.name);
     const source = item.source;
     if (typeof source === 'string') {
-      if (!source.startsWith('./')) problems.push(`${at}.source local path must be repository-relative`);
+      if (!new RegExp(specification.localSource.pathPattern).test(source)) problems.push(`${location}.source local path must be repository-relative`);
       else {
         const pluginRoot = source.slice(2);
-        const metadataPath = join(root, pluginRoot, '.claude-plugin', 'plugin.json');
-        const skillPath = join(root, pluginRoot, 'skills', String(item.name), 'SKILL.md');
-        if (!existsSync(metadataPath)) problems.push(`${at}.source missing .claude-plugin/plugin.json: ${source}`);
+        const metadataPath = join(root, pluginRoot, specification.localSource.metadataPath);
+        const skillPath = join(root, pluginRoot, specification.localSource.skillPath.replace('{name}', String(item.name)));
+        if (!existsSync(metadataPath)) problems.push(`${location}.source missing ${specification.localSource.metadataPath}: ${source}`);
         else {
           try {
             const metadata = JSON.parse(readFileSync(metadataPath, 'utf8')) as Record<string, unknown>;
-            for (const field of ['name', 'description', 'version']) if (typeof metadata[field] !== 'string' || metadata[field] === '') problems.push(`${at}.source plugin.json ${field} is required`);
-            if (metadata.name !== item.name) problems.push(`${at}.source plugin.json name must match ${String(item.name)}`);
-          } catch { problems.push(`${at}.source plugin.json is invalid JSON: ${source}`); }
+            for (const field of specification.localSource.metadataRequired) if (typeof metadata[field] !== 'string' || metadata[field] === '') problems.push(`${location}.source plugin.json ${field} is required`);
+            if (metadata.name !== item.name) problems.push(`${location}.source plugin.json name must match ${String(item.name)}`);
+          } catch { problems.push(`${location}.source plugin.json is invalid JSON: ${source}`); }
         }
-        if (!existsSync(skillPath)) problems.push(`${at}.source missing skills/${String(item.name)}/SKILL.md: ${source}`);
+        if (!existsSync(skillPath)) problems.push(`${location}.source missing ${specification.localSource.skillPath.replace('{name}', String(item.name))}: ${source}`);
       }
     } else if (source && typeof source === 'object' && !Array.isArray(source)) {
       const github = source as Record<string, unknown>;
-      if (github.source !== 'github') problems.push(`${at}.source.source must be github`);
-      if (typeof github.repo !== 'string' || !/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(github.repo)) problems.push(`${at}.source.repo is invalid`);
-      if (typeof github.ref !== 'string' || !/^[0-9a-f]{40}$/.test(github.ref)) problems.push(`${at}.source.ref must be a lowercase 40-character SHA`);
-    } else problems.push(`${at}.source must be a local path or GitHub source`);
+      for (const field of specification.githubSource.required) if (!(field in github)) problems.push(`${location}.source.${field} is required`);
+      for (const field of Object.keys(github)) if (!specification.githubSource.properties.includes(field)) problems.push(`${location}.source has unexpected property ${field}`);
+      if (github.source !== specification.githubSource.source) problems.push(`${location}.source.source must be github`);
+      if (typeof github.repo !== 'string' || !new RegExp(specification.githubSource.repoPattern).test(github.repo)) problems.push(`${location}.source.repo is invalid`);
+      if (typeof github.ref !== 'string' || !new RegExp(specification.githubSource.refPattern).test(github.ref)) problems.push(`${location}.source.ref must be a lowercase 40-character SHA`);
+    } else problems.push(`${location}.source must be a local path or GitHub source`);
   }
   return problems;
 }
