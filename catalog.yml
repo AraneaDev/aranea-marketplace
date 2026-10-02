@@ -3,28 +3,28 @@ entries:
   - id: security-audit
     kind: skill
     install: security-audit
-    source: { type: local, path: skills/security-audit }
-    site: { page: security-audit, readme: skills/security-audit/SKILL.md }
+    source: { type: local, path: plugins/security-audit }
+    site: { page: security-audit, readme: plugins/security-audit/skills/security-audit/SKILL.md }
   - id: agent-config-audit
     kind: skill
     install: agent-config-audit
-    source: { type: local, path: skills/agent-config-audit }
-    site: { page: agent-config-audit, readme: skills/agent-config-audit/SKILL.md }
+    source: { type: local, path: plugins/agent-config-audit }
+    site: { page: agent-config-audit, readme: plugins/agent-config-audit/skills/agent-config-audit/SKILL.md }
   - id: codebase-scorecard
     kind: skill
     install: codebase-scorecard
-    source: { type: local, path: skills/codebase-scorecard }
-    site: { page: codebase-scorecard, readme: skills/codebase-scorecard/SKILL.md }
+    source: { type: local, path: plugins/codebase-scorecard }
+    site: { page: codebase-scorecard, readme: plugins/codebase-scorecard/skills/codebase-scorecard/SKILL.md }
   - id: comprehensive-audit
     kind: skill
     install: comprehensive-audit
-    source: { type: local, path: skills/comprehensive-audit }
-    site: { page: comprehensive-audit, readme: skills/comprehensive-audit/SKILL.md }
+    source: { type: local, path: plugins/comprehensive-audit }
+    site: { page: comprehensive-audit, readme: plugins/comprehensive-audit/skills/comprehensive-audit/SKILL.md }
   - id: decompose
     kind: skill
     install: decompose
-    source: { type: local, path: skills/decompose }
-    site: { page: decompose, readme: skills/decompose/SKILL.md }
+    source: { type: local, path: plugins/decompose }
+    site: { page: decompose, readme: plugins/decompose/skills/decompose/SKILL.md }
   - id: alpheus
     kind: plugin
     install: alpheus

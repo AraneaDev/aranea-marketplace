@@ -10,7 +10,7 @@
   "plugins": [
     {
       "name": "agent-config-audit",
-      "source": "./skills/agent-config-audit"
+      "source": "./plugins/agent-config-audit"
     },
     {
       "name": "alpheus",
@@ -46,15 +46,15 @@
     },
     {
       "name": "codebase-scorecard",
-      "source": "./skills/codebase-scorecard"
+      "source": "./plugins/codebase-scorecard"
     },
     {
       "name": "comprehensive-audit",
-      "source": "./skills/comprehensive-audit"
+      "source": "./plugins/comprehensive-audit"
     },
     {
       "name": "decompose",
-      "source": "./skills/decompose"
+      "source": "./plugins/decompose"
     },
     {
       "name": "kairos",
@@ -82,7 +82,7 @@
     },
     {
       "name": "security-audit",
-      "source": "./skills/security-audit"
+      "source": "./plugins/security-audit"
     }
   ]
 }

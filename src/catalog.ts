@@ -73,10 +73,19 @@ export function validateCatalog(catalog: Catalog, root: string): ValidationProbl
 
 function validateLocal(entry: CatalogEntry, root: string, problems: string[]) {
   const source = entry.source as LocalSource;
-  const expectedPath = `skills/${entry.id}`;
+  const expectedPath = `plugins/${entry.id}`;
   if (source.path !== expectedPath) problems.push(`${entry.id}.source.path must be ${expectedPath}: ${source.path}`);
-  const skillFile = join(root, source.path, 'SKILL.md');
-  if (!existsSync(skillFile)) problems.push(`${entry.id}.source.path missing SKILL.md: ${source.path}`);
+  const pluginFile = join(root, source.path, '.claude-plugin', 'plugin.json');
+  if (!existsSync(pluginFile)) problems.push(`${entry.id}.source.path missing .claude-plugin/plugin.json: ${source.path}`);
+  else {
+    try {
+      const metadata = JSON.parse(readFileSync(pluginFile, 'utf8')) as Record<string, unknown>;
+      for (const field of ['name', 'description', 'version']) if (typeof metadata[field] !== 'string' || metadata[field] === '') problems.push(`${entry.id}.plugin.json ${field} must be a non-empty string`);
+      if (metadata.name !== entry.install) problems.push(`${entry.id}.plugin.json name must be ${entry.install}`);
+    } catch { problems.push(`${entry.id}.source.path plugin.json is invalid JSON: ${source.path}`); }
+  }
+  const skillFile = join(root, source.path, 'skills', entry.id, 'SKILL.md');
+  if (!existsSync(skillFile)) problems.push(`${entry.id}.source.path missing skills/${entry.id}/SKILL.md: ${source.path}`);
   if (entry.site.readme && !/^https?:\/\//.test(entry.site.readme) && !existsSync(resolve(root, entry.site.readme))) problems.push(`${entry.id}.site.readme target does not exist: ${entry.site.readme}`);
 }
 

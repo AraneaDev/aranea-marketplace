@@ -2,6 +2,8 @@
   "version": 1,
   "marketplace": "aranea",
   "marketplaceUrl": "https://github.com/AraneaDev/aranea-marketplace",
+  "manifestUrl": "https://raw.githubusercontent.com/AraneaDev/aranea-marketplace/main/generated/marketplace.json",
+  "feedUrl": "https://raw.githubusercontent.com/AraneaDev/aranea-marketplace/main/generated/site-feed.json",
   "entries": [
     {
       "id": "agent-config-audit",
@@ -9,11 +11,11 @@
       "install": "agent-config-audit",
       "display": {
         "page": "agent-config-audit",
-        "readme": "skills/agent-config-audit/SKILL.md"
+        "readme": "plugins/agent-config-audit/skills/agent-config-audit/SKILL.md"
       },
       "source": {
         "type": "local",
-        "path": "skills/agent-config-audit"
+        "path": "plugins/agent-config-audit"
       },
       "version": {},
       "locales": {
@@ -126,11 +128,11 @@
       "install": "codebase-scorecard",
       "display": {
         "page": "codebase-scorecard",
-        "readme": "skills/codebase-scorecard/SKILL.md"
+        "readme": "plugins/codebase-scorecard/skills/codebase-scorecard/SKILL.md"
       },
       "source": {
         "type": "local",
-        "path": "skills/codebase-scorecard"
+        "path": "plugins/codebase-scorecard"
       },
       "version": {},
       "locales": {
@@ -147,11 +149,11 @@
       "install": "comprehensive-audit",
       "display": {
         "page": "comprehensive-audit",
-        "readme": "skills/comprehensive-audit/SKILL.md"
+        "readme": "plugins/comprehensive-audit/skills/comprehensive-audit/SKILL.md"
       },
       "source": {
         "type": "local",
-        "path": "skills/comprehensive-audit"
+        "path": "plugins/comprehensive-audit"
       },
       "version": {},
       "locales": {
@@ -168,11 +170,11 @@
       "install": "decompose",
       "display": {
         "page": "decompose",
-        "readme": "skills/decompose/SKILL.md"
+        "readme": "plugins/decompose/skills/decompose/SKILL.md"
       },
       "source": {
         "type": "local",
-        "path": "skills/decompose"
+        "path": "plugins/decompose"
       },
       "version": {},
       "locales": {
@@ -261,11 +263,11 @@
       "install": "security-audit",
       "display": {
         "page": "security-audit",
-        "readme": "skills/security-audit/SKILL.md"
+        "readme": "plugins/security-audit/skills/security-audit/SKILL.md"
       },
       "source": {
         "type": "local",
-        "path": "skills/security-audit"
+        "path": "plugins/security-audit"
       },
       "version": {},
       "locales": {

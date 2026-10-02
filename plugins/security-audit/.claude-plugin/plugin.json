@@ -1,0 +1,5 @@
+{
+  "name": "security-audit",
+  "description": "Audit a repository for security weaknesses and supply-chain risks.",
+  "version": "0.1.0"
+}

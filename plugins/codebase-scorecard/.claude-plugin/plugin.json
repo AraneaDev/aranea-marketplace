@@ -1,0 +1,5 @@
+{
+  "name": "codebase-scorecard",
+  "description": "Evaluate a codebase with a structured engineering scorecard.",
+  "version": "0.1.0"
+}

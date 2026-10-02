@@ -6,7 +6,8 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "validate": "tsx src/catalog.ts",
-    "generate": "tsx src/catalog.ts --generate"
+    "generate": "tsx src/catalog.ts --generate",
+    "validate:manifest": "tsx src/validate-generated.ts"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

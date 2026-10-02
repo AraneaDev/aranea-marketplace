@@ -46,6 +46,8 @@ export type SiteFeed = {
   version: 1;
   marketplace: string;
   marketplaceUrl: string;
+  manifestUrl: string;
+  feedUrl: string;
   entries: SiteFeedEntry[];
 };
 

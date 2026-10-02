@@ -1,0 +1,5 @@
+{
+  "name": "agent-config-audit",
+  "description": "Audit Claude Code and agent configuration for risky or inconsistent settings.",
+  "version": "0.1.0"
+}

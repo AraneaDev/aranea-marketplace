@@ -1,0 +1,5 @@
+{
+  "name": "decompose",
+  "description": "Decompose a complex request into an actionable implementation plan.",
+  "version": "0.1.0"
+}

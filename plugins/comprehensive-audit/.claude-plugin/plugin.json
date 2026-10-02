@@ -1,0 +1,5 @@
+{
+  "name": "comprehensive-audit",
+  "description": "Run a comprehensive audit across code, configuration, and documentation.",
+  "version": "0.1.0"
+}

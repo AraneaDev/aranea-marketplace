@@ -1,4 +1,4 @@
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type {
   Catalog, CatalogEntry, MarketplaceManifest, MarketplaceSource, SiteFeed, SiteFeedEntry,
@@ -6,6 +6,8 @@ import type {
 import { renderInstallBlock } from './readme-snippets.js';
 
 export const MARKETPLACE_URL = 'https://github.com/AraneaDev/aranea-marketplace';
+export const MANIFEST_URL = 'https://raw.githubusercontent.com/AraneaDev/aranea-marketplace/main/generated/marketplace.json';
+export const FEED_URL = 'https://raw.githubusercontent.com/AraneaDev/aranea-marketplace/main/generated/site-feed.json';
 const CLAUDE_SCHEMA = 'https://anthropic.com/claude-code/marketplace.schema.json';
 
 const ordered = (catalog: Catalog): CatalogEntry[] => [...catalog.entries].sort((a, b) => a.id.localeCompare(b.id));
@@ -54,8 +56,56 @@ export function generateSiteFeed(catalog: Catalog): SiteFeed {
     version: 1,
     marketplace: catalog.marketplace,
     marketplaceUrl: MARKETPLACE_URL,
+    manifestUrl: MANIFEST_URL,
+    feedUrl: FEED_URL,
     entries: ordered(catalog).map((entry) => feedEntry(catalog, entry)),
   };
+}
+
+export function validateMarketplaceManifest(manifest: unknown, root: string): string[] {
+  const problems: string[] = [];
+  if (!manifest || typeof manifest !== 'object' || Array.isArray(manifest)) return ['manifest must be an object'];
+  const value = manifest as Record<string, unknown>;
+  if (value.$schema !== CLAUDE_SCHEMA) problems.push('manifest.$schema is invalid');
+  if (typeof value.name !== 'string' || value.name === '') problems.push('manifest.name must be a non-empty string');
+  const owner = value.owner;
+  if (!owner || typeof owner !== 'object' || Array.isArray(owner) || typeof (owner as Record<string, unknown>).name !== 'string') problems.push('manifest.owner.name is required');
+  const metadata = value.metadata;
+  if (!metadata || typeof metadata !== 'object' || Array.isArray(metadata) || typeof (metadata as Record<string, unknown>).description !== 'string') problems.push('manifest.metadata.description is required');
+  if (!Array.isArray(value.plugins)) return [...problems, 'manifest.plugins must be an array'];
+  const names = new Set<string>();
+  for (const [index, plugin] of value.plugins.entries()) {
+    const at = `manifest.plugins[${index}]`;
+    if (!plugin || typeof plugin !== 'object' || Array.isArray(plugin)) { problems.push(`${at} must be an object`); continue; }
+    const item = plugin as Record<string, unknown>;
+    if (typeof item.name !== 'string' || item.name === '') problems.push(`${at}.name is required`);
+    else if (names.has(item.name)) problems.push(`${at}.name duplicates ${item.name}`);
+    else names.add(item.name);
+    const source = item.source;
+    if (typeof source === 'string') {
+      if (!source.startsWith('./')) problems.push(`${at}.source local path must be repository-relative`);
+      else {
+        const pluginRoot = source.slice(2);
+        const metadataPath = join(root, pluginRoot, '.claude-plugin', 'plugin.json');
+        const skillPath = join(root, pluginRoot, 'skills', String(item.name), 'SKILL.md');
+        if (!existsSync(metadataPath)) problems.push(`${at}.source missing .claude-plugin/plugin.json: ${source}`);
+        else {
+          try {
+            const metadata = JSON.parse(readFileSync(metadataPath, 'utf8')) as Record<string, unknown>;
+            for (const field of ['name', 'description', 'version']) if (typeof metadata[field] !== 'string' || metadata[field] === '') problems.push(`${at}.source plugin.json ${field} is required`);
+            if (metadata.name !== item.name) problems.push(`${at}.source plugin.json name must match ${String(item.name)}`);
+          } catch { problems.push(`${at}.source plugin.json is invalid JSON: ${source}`); }
+        }
+        if (!existsSync(skillPath)) problems.push(`${at}.source missing skills/${String(item.name)}/SKILL.md: ${source}`);
+      }
+    } else if (source && typeof source === 'object' && !Array.isArray(source)) {
+      const github = source as Record<string, unknown>;
+      if (github.source !== 'github') problems.push(`${at}.source.source must be github`);
+      if (typeof github.repo !== 'string' || !/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(github.repo)) problems.push(`${at}.source.repo is invalid`);
+      if (typeof github.ref !== 'string' || !/^[0-9a-f]{40}$/.test(github.ref)) problems.push(`${at}.source.ref must be a lowercase 40-character SHA`);
+    } else problems.push(`${at}.source must be a local path or GitHub source`);
+  }
+  return problems;
 }
 
 export type GeneratedArtifacts = {
