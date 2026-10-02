@@ -154,11 +154,11 @@ describe('README synchronization', () => {
     const branchReadme = `branch-only\n${block}\nbranch-tail`;
     const fetchSpy = installWriteFetch([
       jsonResponse({ token: 'app-token' }),
-      jsonResponse({ content: Buffer.from(defaultReadme).toString('base64') }),
+      jsonResponse({ content: Buffer.from(defaultReadme).toString('base64'), path: 'docs/README.md' }),
       jsonResponse({ default_branch: 'main' }),
       jsonResponse({ object: { sha: 'base-sha' } }),
       jsonResponse({ object: { sha: 'branch-sha' } }),
-      jsonResponse({ content: Buffer.from(branchReadme).toString('base64'), sha: 'branch-readme-sha' }),
+      jsonResponse({ content: Buffer.from(branchReadme).toString('base64'), sha: 'branch-readme-sha', path: 'docs/README.md' }),
       jsonResponse({ content: { sha: 'updated' } }),
       jsonResponse([{ html_url: 'https://github.com/AraneaDev/alpheus/pull/7' }]),
     ]);
@@ -170,9 +170,38 @@ describe('README synchronization', () => {
       });
       const update = fetchSpy.mock.calls.find(([, init]) => init?.method === 'PUT');
       expect(update).toBeDefined();
+      expect(String(update![0])).toContain('/repos/AraneaDev/alpheus/contents/docs/README.md');
       const payload = JSON.parse(update![1].body as string);
       expect(Buffer.from(payload.content, 'base64').toString('utf8')).toBe(`branch-only\n${start}\nInstall from the Aranea marketplace:\n\n\`\`\`sh\nclaude plugin marketplace add https://github.com/AraneaDev/aranea-marketplace\nclaude plugin install alpheus@aranea\n\`\`\`\n${end}\nbranch-tail`);
       expect(fetchSpy.mock.calls.some(([url, init]) => String(url).endsWith('/pulls') && init?.method === 'POST')).toBe(false);
+    } finally {
+      restoreAuth();
+      vi.unstubAllGlobals();
+    }
+  });
+
+  it('reconciles a stale synchronization branch when the default README is current', async () => {
+    const restoreAuth = writeAuth();
+    const current = '<!-- aranea-install:start -->\nInstall from the Aranea marketplace:\n\n```sh\nclaude plugin marketplace add https://github.com/AraneaDev/aranea-marketplace\nclaude plugin install alpheus@aranea\n```\n<!-- aranea-install:end -->';
+    const fetchSpy = installWriteFetch([
+      jsonResponse({ token: 'app-token' }),
+      jsonResponse({ content: Buffer.from(current).toString('base64'), path: 'README.md' }),
+      jsonResponse({ default_branch: 'main' }),
+      jsonResponse({ object: { sha: 'base-sha' } }),
+      jsonResponse({ object: { sha: 'branch-sha' } }),
+      jsonResponse({ content: Buffer.from(`${start}\nold\n${end}`).toString('base64'), sha: 'branch-readme-sha', path: 'README.md' }),
+      jsonResponse({ content: { sha: 'updated' } }),
+      jsonResponse([{ html_url: 'https://github.com/AraneaDev/alpheus/pull/7' }]),
+    ]);
+    vi.stubGlobal('fetch', fetchSpy);
+    try {
+      await expect(syncRepository('AraneaDev/alpheus', entry, 'write')).resolves.toMatchObject({
+        status: 'changed',
+        pullRequestUrl: 'https://github.com/AraneaDev/alpheus/pull/7',
+      });
+      const update = fetchSpy.mock.calls.find(([, init]) => init?.method === 'PUT');
+      expect(update).toBeDefined();
+      expect(String(update![0])).toContain('/repos/AraneaDev/alpheus/contents/README.md');
     } finally {
       restoreAuth();
       vi.unstubAllGlobals();
@@ -184,11 +213,11 @@ describe('README synchronization', () => {
     const current = '<!-- aranea-install:start -->\nInstall from the Aranea marketplace:\n\n```sh\nclaude plugin marketplace add https://github.com/AraneaDev/aranea-marketplace\nclaude plugin install alpheus@aranea\n```\n<!-- aranea-install:end -->';
     const fetchSpy = installWriteFetch([
       jsonResponse({ token: 'app-token' }),
-      jsonResponse({ content: Buffer.from(`${start}\nold\n${end}`).toString('base64') }),
+      jsonResponse({ content: Buffer.from(`${start}\nold\n${end}`).toString('base64'), path: 'README.md' }),
       jsonResponse({ default_branch: 'main' }),
       jsonResponse({ object: { sha: 'base-sha' } }),
       jsonResponse({ object: { sha: 'branch-sha' } }),
-      jsonResponse({ content: Buffer.from(`branch-only\n${current}\nbranch-tail`).toString('base64'), sha: 'branch-readme-sha' }),
+      jsonResponse({ content: Buffer.from(`branch-only\n${current}\nbranch-tail`).toString('base64'), sha: 'branch-readme-sha', path: 'README.md' }),
       jsonResponse([{ html_url: 'https://github.com/AraneaDev/alpheus/pull/7' }]),
     ]);
     vi.stubGlobal('fetch', fetchSpy);

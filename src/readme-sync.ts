@@ -151,6 +151,9 @@ function result(repository: string, entry: CatalogEntry, status: SyncStatus, mes
 }
 
 function readmeUrl(repository: string): string { return `/repos/${repository}/readme`; }
+function contentsUrl(repository: string, path: string): string {
+  return `/repos/${repository}/contents/${path.split('/').map(encodeURIComponent).join('/')}`;
+}
 function branchName(repository: string): string {
   return `aranea/marketplace-readme/${repository.replace(/[^A-Za-z0-9_.-]+/g, '-')}`;
 }
@@ -205,8 +208,11 @@ export async function syncRepository(repository: string, entry: CatalogEntry, mo
   const renderedBytes = Buffer.from(rendered);
   const sourceUpdate = renderUpdatedReadme(sourceReadme, renderedBytes);
   if (!sourceUpdate.updated) return result(repository, entry, 'missing-markers', sourceUpdate.message!, false);
-  if (sourceUpdate.updated.equals(sourceReadme)) return result(repository, entry, 'unchanged', 'README install block is already current', false);
-  if (mode === 'dry-run') return result(repository, entry, 'changed', 'README install block would change in a pull request');
+  if (mode === 'dry-run') {
+    return sourceUpdate.updated.equals(sourceReadme)
+      ? result(repository, entry, 'unchanged', 'README install block is already current', false)
+      : result(repository, entry, 'changed', 'README install block would change in a pull request');
+  }
 
   const branch = branchName(repository);
   const repoInfo = await githubRequest(`/repos/${repository}`, {}, auth);
@@ -216,11 +222,12 @@ export async function syncRepository(repository: string, entry: CatalogEntry, mo
   if (!baseRef.response.ok || typeof baseRef.body?.object?.sha !== 'string') return result(repository, entry, 'inaccessible', `default branch ref request failed with HTTP ${baseRef.response.status}`, false);
   const existingRef = await githubRequest(`/repos/${repository}/git/ref/heads/${encodeURIComponent(branch)}`, {}, auth);
   if (existingRef.response.status === 404) {
+    if (sourceUpdate.updated.equals(sourceReadme)) return result(repository, entry, 'unchanged', 'README install block is already current', false);
     const created = await githubRequest(`/repos/${repository}/git/refs`, { method: 'POST', body: JSON.stringify({ ref: `refs/heads/${branch}`, sha: baseRef.body.object.sha }) }, auth);
     if (!created.response.ok) return result(repository, entry, 'inaccessible', `branch creation failed with HTTP ${created.response.status}`, false);
   } else if (!existingRef.response.ok) return result(repository, entry, 'inaccessible', `branch lookup failed with HTTP ${existingRef.response.status}`, false);
   const contents = await githubRequest(`${readmeUrl(repository)}?ref=${encodeURIComponent(branch)}`, {}, auth);
-  if (!contents.response.ok || typeof contents.body?.sha !== 'string' || typeof contents.body?.content !== 'string') return result(repository, entry, 'inaccessible', `branch README request failed with HTTP ${contents.response.status}`, false);
+  if (!contents.response.ok || typeof contents.body?.path !== 'string' || typeof contents.body?.sha !== 'string' || typeof contents.body?.content !== 'string') return result(repository, entry, 'inaccessible', `branch README request failed with HTTP ${contents.response.status}`, false);
   const branchReadme = decodeReadme(contents.body.content);
   if (!branchReadme) return result(repository, entry, 'invalid', 'branch README is not valid UTF-8; no write made', false);
   const branchUpdate = renderUpdatedReadme(branchReadme, renderedBytes);
@@ -230,7 +237,7 @@ export async function syncRepository(repository: string, entry: CatalogEntry, mo
     if (pull.error) return result(repository, entry, 'inaccessible', pull.error, false);
     return { ...result(repository, entry, 'unchanged', 'README install block is already current on the synchronization branch', false), pullRequestUrl: pull.pull?.html_url };
   }
-  const update = await githubRequest(readmeUrl(repository), { method: 'PUT', body: JSON.stringify({ message: 'docs: synchronize marketplace install block', content: branchUpdate.updated.toString('base64'), sha: contents.body.sha, branch }) }, auth);
+  const update = await githubRequest(contentsUrl(repository, contents.body.path), { method: 'PUT', body: JSON.stringify({ message: 'docs: synchronize marketplace install block', content: branchUpdate.updated.toString('base64'), sha: contents.body.sha, branch }) }, auth);
   if (!update.response.ok) return result(repository, entry, 'inaccessible', `README update failed with HTTP ${update.response.status}`, false);
   const pull = await findOrCreatePullRequest(repository, branch, base, auth);
   if (pull.error) return result(repository, entry, 'inaccessible', pull.error, true);

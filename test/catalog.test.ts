@@ -70,6 +70,18 @@ describe('validateCatalog', () => {
     `)).toThrow(pattern);
   });
 
+  it('rejects unknown keys in GitHub source records', () => {
+    expect(() => loadCatalog(`
+      marketplace: aranea
+      entries:
+        - id: github-plugin
+          kind: plugin
+          install: github-plugin
+          source: { type: github, repository: AraneaDev/example, commit: "0123456789abcdef0123456789abcdef01234567", commmit: typo }
+          site: { page: github-plugin, readme: https://github.com/AraneaDev/example#readme }
+    `)).toThrow(/source.*unknown.*commmit/);
+  });
+
   it.each([
     ['duplicate id', `  - id: local-skill\n    kind: skill\n    install: other\n    source: { type: local, path: plugins/local-skill }\n    site: { page: other, readme: README.md }`],
     ['duplicate install name', `  - id: other\n    kind: skill\n    install: local-skill\n    source: { type: local, path: plugins/local-skill }\n    site: { page: other, readme: README.md }`],

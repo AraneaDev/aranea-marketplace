@@ -33,8 +33,10 @@ export function loadCatalog(text: string): Catalog {
     const sourceType = requiredString(sourceValue.type, `${at}.source.type`);
     let source: Source;
     if (sourceType === 'local') {
+      rejectUnknownKeys(sourceValue, ['type', 'path'], `${at}.source`);
       source = { type: 'local', path: requiredString(sourceValue.path, `${at}.source.path`) };
     } else if (sourceType === 'github') {
+      rejectUnknownKeys(sourceValue, ['type', 'repository', 'commit'], `${at}.source`);
       source = {
         type: 'github',
         repository: requiredString(sourceValue.repository, `${at}.source.repository`).replace(/^https:\/\/github\.com\//, '').replace(/\.git$/, ''),
