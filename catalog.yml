@@ -60,3 +60,51 @@ entries:
     install: minos
     source: { type: github, repository: AraneaDev/minos, commit: "8dcc9981035572293e4ac4ee654b33123bd0e4ed" }
     site: { page: minos, readme: https://github.com/AraneaDev/minos#readme }
+  - id: argos-mcp
+    kind: site
+    source: { type: site-only }
+    site:
+      page: argos-mcp
+      readme: https://github.com/AraneaDev/Argos-MCP#readme
+      locales: { nl: /tools/argos-mcp, en: /en/tools/argos-mcp }
+    installation: { type: non-installable }
+  - id: chaos-mcp
+    kind: site
+    source: { type: site-only }
+    site:
+      page: chaos-mcp
+      readme: https://github.com/AraneaDev/Chaos-MCP#readme
+      locales: { nl: /tools/chaos-mcp, en: /en/tools/chaos-mcp }
+    installation: { type: non-installable }
+  - id: knossos-mcp
+    kind: site
+    source: { type: site-only }
+    site:
+      page: knossos-mcp
+      readme: https://github.com/AraneaDev/Knossos-MCP#readme
+      locales: { nl: /tools/knossos-mcp, en: /en/tools/knossos-mcp }
+    installation: { type: non-installable }
+  - id: mcp-observatory
+    kind: site
+    source: { type: site-only }
+    site:
+      page: mcp-observatory
+      readme: https://mcpobservatory.com
+      locales: { nl: /tools/mcp-observatory, en: /en/tools/mcp-observatory }
+    installation: { type: non-installable }
+  - id: momus-mcp
+    kind: site
+    source: { type: site-only }
+    site:
+      page: momus-mcp
+      readme: https://github.com/AraneaDev/Momus-MCP#readme
+      locales: { nl: /tools/momus-mcp, en: /en/tools/momus-mcp }
+    installation: { type: non-installable }
+  - id: nekyia
+    kind: site
+    source: { type: site-only }
+    site:
+      page: nekyia
+      readme: https://github.com/AraneaDev/Nekyia#readme
+      locales: { nl: /tools/nekyia, en: /en/tools/nekyia }
+    installation: { type: non-installable }

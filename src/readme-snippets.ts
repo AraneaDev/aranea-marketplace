@@ -1,8 +1,10 @@
 import type { CatalogEntry, SiteFeed } from './schema.js';
 
 export function renderInstallBlock(entry: CatalogEntry, feed: SiteFeed): string {
+  if (entry.kind === 'site') throw new Error(`entry ${entry.id} is site-only and has no README install snippet`);
   const item = feed.entries.find((candidate) => candidate.id === entry.id);
   if (!item) throw new Error(`entry ${entry.id} is missing from site feed`);
+  if (!('marketplace' in item.installation)) throw new Error(`entry ${entry.id} is site-only and has no README install snippet`);
   const lines = [
     '<!-- aranea-install:start -->',
     'Install from the Aranea marketplace:',

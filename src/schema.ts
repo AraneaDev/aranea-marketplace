@@ -1,6 +1,7 @@
 export type LocalSource = { type: 'local'; path: string };
 export type GithubSource = { type: 'github'; repository: string; commit: string };
-export type Source = LocalSource | GithubSource;
+export type SiteOnlySource = { type: 'site-only' };
+export type Source = LocalSource | GithubSource | SiteOnlySource;
 
 export type Locale = 'en' | 'nl';
 export type SiteMapping = {
@@ -11,13 +12,14 @@ export type SiteMapping = {
 export type InstallationVariants = {
   fallback?: string;
 };
+export type NonInstallableInstallation = { type: 'non-installable' };
 export type CatalogEntry = {
   id: string;
-  kind: 'skill' | 'plugin';
-  install: string;
+  kind: 'skill' | 'plugin' | 'site';
+  install?: string;
   source: Source;
   site: SiteMapping;
-  installation?: InstallationVariants;
+  installation?: InstallationVariants | NonInstallableInstallation;
 };
 
 export type Catalog = { marketplace: string; entries: CatalogEntry[] };
@@ -35,12 +37,12 @@ export type MarketplaceManifest = {
 export type SiteFeedEntry = {
   id: string;
   kind: CatalogEntry['kind'];
-  install: string;
+  install?: string;
   display: { page: string; readme: string };
   source: Source;
   version: { pin?: string };
   locales: Record<Locale, string>;
-  installation: { marketplace: string; fallback?: string };
+  installation: { marketplace: string; fallback?: string } | NonInstallableInstallation;
 };
 export type SiteFeed = {
   version: 1;

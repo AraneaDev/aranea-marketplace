@@ -36,11 +36,12 @@ export function generateMarketplace(catalog: Catalog): MarketplaceManifest {
     name: catalog.marketplace,
     owner: { name: 'AraneaDev' },
     metadata: { description: 'Aranea first-party plugins and skills' },
-    plugins: ordered(catalog).map((entry) => {
+    plugins: ordered(catalog).filter((entry) => entry.kind !== 'site').map((entry) => {
       let source: MarketplaceSource;
       if (entry.source.type === 'local') source = `./${entry.source.path}`;
-      else source = { source: 'github', repo: entry.source.repository, ref: entry.source.commit };
-      return { name: entry.install, source };
+      else if (entry.source.type === 'github') source = { source: 'github', repo: entry.source.repository, ref: entry.source.commit };
+      else throw new Error(`site-only entry ${entry.id} cannot appear in the marketplace manifest`);
+      return { name: entry.install!, source };
     }),
   };
 }
@@ -54,17 +55,28 @@ function locales(entry: CatalogEntry): Record<'en' | 'nl', string> {
 }
 
 function feedEntry(catalog: Catalog, entry: CatalogEntry): SiteFeedEntry {
+  if (entry.kind === 'site') {
+    return {
+      id: entry.id,
+      kind: entry.kind,
+      display: { page: entry.site.page!, readme: entry.site.readme! },
+      source: entry.source,
+      version: {},
+      locales: locales(entry),
+      installation: { type: 'non-installable' },
+    };
+  }
   return {
     id: entry.id,
     kind: entry.kind,
-    install: entry.install,
+    install: entry.install!,
     display: { page: entry.site.page!, readme: entry.site.readme! },
     source: entry.source,
     version: entry.source.type === 'github' ? { pin: entry.source.commit } : {},
     locales: locales(entry),
     installation: {
-      marketplace: `claude plugin install ${entry.install}@${catalog.marketplace}`,
-      ...(entry.installation?.fallback ? { fallback: entry.installation.fallback } : {}),
+      marketplace: `claude plugin install ${entry.install!}@${catalog.marketplace}`,
+      ...(entry.installation && 'fallback' in entry.installation && entry.installation.fallback ? { fallback: entry.installation.fallback } : {}),
     },
   };
 }
@@ -156,7 +168,9 @@ const json = (value: unknown): string => `${JSON.stringify(value, null, 2)}\n`;
 export function generateArtifacts(catalog: Catalog, root: string): GeneratedArtifacts {
   const marketplace = generateMarketplace(catalog);
   const siteFeed = generateSiteFeed(catalog);
-  const readmeSnippets = Object.fromEntries(ordered(catalog).map((entry) => [entry.id, renderInstallBlock(entry, siteFeed)]));
+  const readmeSnippets = Object.fromEntries(ordered(catalog)
+    .filter((entry) => entry.kind !== 'site')
+    .map((entry) => [entry.id, renderInstallBlock(entry, siteFeed)]));
   const generated = join(root, 'generated');
   mkdirSync(generated, { recursive: true });
   writeFileSync(join(generated, 'marketplace.json'), json(marketplace));

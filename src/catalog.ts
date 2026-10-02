@@ -22,7 +22,7 @@ export function loadCatalog(text: string): Catalog {
     const at = `entries[${index}]`;
     if (!isRecord(value)) throw new Error(`${at} must be an object`);
     const kind = requiredString(value.kind, `${at}.kind`);
-    if (kind !== 'skill' && kind !== 'plugin') throw new Error(`${at}.kind unknown entry kind: ${kind}`);
+    if (kind !== 'skill' && kind !== 'plugin' && kind !== 'site') throw new Error(`${at}.kind unknown entry kind: ${kind}`);
     const sourceValue = value.source;
     if (!isRecord(sourceValue)) throw new Error(`${at}.source must be an object`);
     const sourceType = requiredString(sourceValue.type, `${at}.source.type`);
@@ -35,6 +35,8 @@ export function loadCatalog(text: string): Catalog {
         repository: requiredString(sourceValue.repository, `${at}.source.repository`).replace(/^https:\/\/github\.com\//, '').replace(/\.git$/, ''),
         commit: requiredString(sourceValue.commit, `${at}.source.commit`),
       };
+    } else if (sourceType === 'site-only') {
+      source = { type: 'site-only' };
     } else throw new Error(`${at}.source.type unknown source type: ${sourceType}`);
     const site = isRecord(value.site) ? {
       page: typeof value.site.page === 'string' ? value.site.page : undefined,
@@ -44,10 +46,15 @@ export function loadCatalog(text: string): Catalog {
         nl: typeof value.site.locales.nl === 'string' ? value.site.locales.nl : undefined,
       } : undefined,
     } : {};
-    const installation = isRecord(value.installation) && typeof value.installation.fallback === 'string'
-      ? { fallback: value.installation.fallback }
+    const installation = isRecord(value.installation)
+      ? value.installation.type === 'non-installable'
+        ? { type: 'non-installable' as const }
+        : typeof value.installation.fallback === 'string'
+          ? { fallback: value.installation.fallback }
+          : {}
       : undefined;
-    return { id: requiredString(value.id, `${at}.id`), kind, install: requiredString(value.install, `${at}.install`), source, site, installation };
+    const install = typeof value.install === 'string' ? value.install : undefined;
+    return { id: requiredString(value.id, `${at}.id`), kind, install, source, site, installation };
   });
   return { marketplace, entries };
 }
@@ -58,15 +65,28 @@ export function validateCatalog(catalog: Catalog, root: string): ValidationProbl
   const installs = new Map<string, string>();
   for (const entry of catalog.entries) {
     if (ids.has(entry.id)) problems.push(`${entry.id}.id duplicates ${ids.get(entry.id)}`); else ids.set(entry.id, entry.id);
-    if (installs.has(entry.install)) problems.push(`${entry.id}.install duplicates ${installs.get(entry.install)}`); else installs.set(entry.install, entry.id);
     if (!/^[a-z0-9][a-z0-9-]*$/.test(entry.id)) problems.push(`${entry.id}.id must be lowercase kebab-case`);
-    if (!/^[a-z0-9][a-z0-9-]*$/.test(entry.install)) problems.push(`${entry.id}.install must be lowercase kebab-case`);
     if (!entry.site.page) problems.push(`${entry.id}.site.page is missing`);
     if (!entry.site.readme) problems.push(`${entry.id}.site.readme is missing`);
-    if (entry.kind === 'skill' && entry.source.type !== 'local') problems.push(`${entry.id}.kind skill requires local source`);
-    if (entry.kind === 'plugin' && entry.source.type !== 'github') problems.push(`${entry.id}.kind plugin requires github source`);
+    if (entry.kind === 'site') {
+      if (entry.install !== undefined) problems.push(`${entry.id}.install is not allowed for site-only entries`);
+      if (entry.source.type !== 'site-only') problems.push(`${entry.id}.source must be site-only`);
+      if (!entry.installation || !('type' in entry.installation) || entry.installation.type !== 'non-installable') problems.push(`${entry.id}.installation must be non-installable`);
+      if (!entry.site.locales?.nl || !entry.site.locales.en) problems.push(`${entry.id}.site.locales must include Dutch and English routes`);
+      else {
+        if (entry.site.locales.nl !== `/tools/${entry.site.page}`) problems.push(`${entry.id}.site.locales.nl must be /tools/${entry.site.page}`);
+        if (entry.site.locales.en !== `/en/tools/${entry.site.page}`) problems.push(`${entry.id}.site.locales.en must be /en/tools/${entry.site.page}`);
+      }
+    } else {
+      if (!entry.install) problems.push(`${entry.id}.install is missing`);
+      else if (installs.has(entry.install)) problems.push(`${entry.id}.install duplicates ${installs.get(entry.install)}`); else installs.set(entry.install, entry.id);
+      if (entry.install && !/^[a-z0-9][a-z0-9-]*$/.test(entry.install)) problems.push(`${entry.id}.install must be lowercase kebab-case`);
+      if (entry.installation && 'type' in entry.installation && entry.installation.type === 'non-installable') problems.push(`${entry.id}.installation cannot be non-installable`);
+      if (entry.kind === 'skill' && entry.source.type !== 'local') problems.push(`${entry.id}.kind skill requires local source`);
+      if (entry.kind === 'plugin' && entry.source.type !== 'github') problems.push(`${entry.id}.kind plugin requires github source`);
+    }
     if (entry.source.type === 'local') validateLocal(entry, root, problems);
-    else validateGithub(entry, problems);
+    else if (entry.source.type === 'github') validateGithub(entry, problems);
   }
   return problems;
 }
