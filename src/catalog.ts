@@ -12,6 +12,11 @@ function requiredString(value: unknown, field: string): string {
   return value;
 }
 
+function rejectUnknownKeys(value: Record<string, unknown>, allowed: string[], field: string): void {
+  const unknown = Object.keys(value).find((key) => !allowed.includes(key));
+  if (unknown) throw new Error(`${field} unknown key: ${unknown}`);
+}
+
 export function loadCatalog(text: string): Catalog {
   let raw: unknown;
   try { raw = parse(text); } catch (error) { throw new Error(`catalog YAML is invalid: ${String(error)}`); }
@@ -36,6 +41,7 @@ export function loadCatalog(text: string): Catalog {
         commit: requiredString(sourceValue.commit, `${at}.source.commit`),
       };
     } else if (sourceType === 'site-only') {
+      rejectUnknownKeys(sourceValue, ['type'], `${at}.source`);
       source = { type: 'site-only' };
     } else throw new Error(`${at}.source.type unknown source type: ${sourceType}`);
     const site = isRecord(value.site) ? {
@@ -48,7 +54,7 @@ export function loadCatalog(text: string): Catalog {
     } : {};
     const installation = isRecord(value.installation)
       ? value.installation.type === 'non-installable'
-        ? { type: 'non-installable' as const }
+        ? (rejectUnknownKeys(value.installation, ['type'], `${at}.installation`), { type: 'non-installable' as const })
         : typeof value.installation.fallback === 'string'
           ? { fallback: value.installation.fallback }
           : {}

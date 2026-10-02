@@ -54,6 +54,23 @@ describe('validateCatalog', () => {
   });
 
   it.each([
+    ['source', `source: { type: site-only, repository: AraneaDev/Argos-MCP }\n          installation: { type: non-installable }`, /source.*unknown.*repository/],
+    ['installation', `source: { type: site-only }\n          installation: { type: non-installable, fallback: forbidden }`, /installation.*unknown.*fallback/],
+  ])('rejects unknown keys in a site-only %s object', (_name, shape, pattern) => {
+    expect(() => loadCatalog(`
+      marketplace: aranea
+      entries:
+        - id: argos-mcp
+          kind: site
+          site:
+            page: argos-mcp
+            readme: https://github.com/AraneaDev/Argos-MCP#readme
+            locales: { nl: /tools/argos-mcp, en: /en/tools/argos-mcp }
+          ${shape}
+    `)).toThrow(pattern);
+  });
+
+  it.each([
     ['duplicate id', `  - id: local-skill\n    kind: skill\n    install: other\n    source: { type: local, path: plugins/local-skill }\n    site: { page: other, readme: README.md }`],
     ['duplicate install name', `  - id: other\n    kind: skill\n    install: local-skill\n    source: { type: local, path: plugins/local-skill }\n    site: { page: other, readme: README.md }`],
   ])('reports %s with the entry and field', (_name, extra) => {
