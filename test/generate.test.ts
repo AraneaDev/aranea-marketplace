@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
+import { execFileSync } from 'node:child_process';
 import { readFileSync, rmSync, mkdtempSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
+import { fileURLToPath } from 'node:url';
 import { generateArtifacts, generateMarketplace, generateSiteFeed, validateMarketplaceManifest } from '../src/generate.js';
 import type { Catalog } from '../src/schema.js';
 
@@ -12,6 +14,7 @@ const catalog: Catalog = {
     { id: 'alpha', kind: 'skill', install: 'alpha', source: { type: 'local', path: 'plugins/alpha' }, site: { page: 'alpha', readme: 'skills/alpha/SKILL.md' } },
   ],
 };
+const projectRoot = fileURLToPath(new URL('..', import.meta.url));
 
 describe('catalog generation', () => {
   it('generates deterministic Claude sources for local and GitHub entries', () => {
@@ -109,6 +112,19 @@ describe('catalog generation', () => {
       }, root).join('\n')).toMatch(/plugin\.json|SKILL\.md/);
     } finally {
       rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it('validates the checkout when invoked from another working directory', () => {
+    const externalDirectory = mkdtempSync(join(tmpdir(), 'aranea-manifest-cwd-'));
+    try {
+      expect(() => execFileSync(
+        process.execPath,
+        [join(projectRoot, 'node_modules', '.bin', 'tsx'), join(projectRoot, 'src', 'validate-generated.ts')],
+        { cwd: externalDirectory, stdio: 'pipe' },
+      )).not.toThrow();
+    } finally {
+      rmSync(externalDirectory, { recursive: true, force: true });
     }
   });
 });

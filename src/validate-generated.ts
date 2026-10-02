@@ -1,8 +1,9 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { validateMarketplaceManifest } from './generate.js';
 
-const root = process.cwd();
+const root = fileURLToPath(new URL('../', import.meta.url));
 const manifest = JSON.parse(readFileSync(join(root, 'generated', 'marketplace.json'), 'utf8')) as unknown;
 const problems = validateMarketplaceManifest(manifest, root);
 if (problems.length) {

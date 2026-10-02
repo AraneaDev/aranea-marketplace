@@ -1,5 +1,6 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import type {
   Catalog, CatalogEntry, MarketplaceManifest, MarketplaceSource, SiteFeed, SiteFeedEntry,
 } from './schema.js';
@@ -23,7 +24,9 @@ type MarketplaceContract = {
   githubSource: { required: string[]; properties: string[]; source: string; repoPattern: string; refPattern: string };
 };
 
-const contract = (): MarketplaceContract => JSON.parse(readFileSync(join(process.cwd(), 'tests/fixtures/claude-marketplace-contract.json'), 'utf8')) as MarketplaceContract;
+const contract = (): MarketplaceContract => JSON.parse(
+  readFileSync(fileURLToPath(new URL('./claude-marketplace-contract.json', import.meta.url)), 'utf8'),
+) as MarketplaceContract;
 
 const ordered = (catalog: Catalog): CatalogEntry[] => [...catalog.entries].sort((a, b) => a.id.localeCompare(b.id));
 
