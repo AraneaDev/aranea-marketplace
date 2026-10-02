@@ -5,6 +5,7 @@ import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { generateArtifacts, generateMarketplace, generateSiteFeed, validateMarketplaceManifest } from '../src/generate.js';
+import { readCatalog } from '../src/catalog.js';
 import type { Catalog } from '../src/schema.js';
 
 const catalog: Catalog = {
@@ -44,6 +45,61 @@ describe('catalog generation', () => {
       installation: { marketplace: 'claude plugin install alpha@aranea' },
     });
     expect(feed.entries[1].version).toEqual({ pin: '0123456789abcdef0123456789abcdef01234567' });
+  });
+
+  it('includes site-only detail pages in the feed but excludes them from Claude and README output', () => {
+    const withSiteOnly = {
+      ...catalog,
+      entries: [
+        ...catalog.entries,
+        {
+          id: 'argos-mcp',
+          kind: 'site',
+          source: { type: 'site-only' },
+          site: {
+            page: 'argos-mcp',
+            readme: 'https://github.com/AraneaDev/Argos-MCP#readme',
+            locales: { nl: '/tools/argos-mcp', en: '/en/tools/argos-mcp' },
+          },
+          installation: { type: 'non-installable' },
+        },
+      ],
+    } as Catalog;
+
+    expect(generateMarketplace(withSiteOnly).plugins.map(({ name }) => name)).toEqual(['alpha', 'zeta']);
+    expect(generateSiteFeed(withSiteOnly).entries).toContainEqual(expect.objectContaining({
+      id: 'argos-mcp',
+      kind: 'site',
+      source: { type: 'site-only' },
+      locales: { nl: '/tools/argos-mcp', en: '/en/tools/argos-mcp' },
+      installation: { type: 'non-installable' },
+    }));
+
+    const root = mkdtempSync(join(tmpdir(), 'aranea-site-only-artifacts-'));
+    try {
+      const artifacts = generateArtifacts(withSiteOnly, root);
+      expect(artifacts.readmeSnippets).not.toHaveProperty('argos-mcp');
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it('publishes all current site-only tool routes without marketplace installation commands', () => {
+    const published = readCatalog(projectRoot);
+    const feed = generateSiteFeed(published);
+    const ids = ['argos-mcp', 'chaos-mcp', 'knossos-mcp', 'mcp-observatory', 'momus-mcp', 'nekyia'];
+    const siteEntries = feed.entries.filter((entry) => entry.kind === 'site');
+
+    expect(siteEntries.map((entry) => entry.id)).toEqual(ids);
+    for (const id of ids) {
+      expect(siteEntries).toContainEqual(expect.objectContaining({
+        id,
+        source: { type: 'site-only' },
+        locales: { nl: `/tools/${id}`, en: `/en/tools/${id}` },
+        installation: { type: 'non-installable' },
+      }));
+    }
+    expect(generateMarketplace(published).plugins.map(({ name }) => name)).not.toEqual(expect.arrayContaining(ids));
   });
 
   it('keeps repeated generation byte-identical', () => {

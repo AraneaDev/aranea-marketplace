@@ -51,6 +51,25 @@
       }
     },
     {
+      "id": "argos-mcp",
+      "kind": "site",
+      "display": {
+        "page": "argos-mcp",
+        "readme": "https://github.com/AraneaDev/Argos-MCP#readme"
+      },
+      "source": {
+        "type": "site-only"
+      },
+      "version": {},
+      "locales": {
+        "nl": "/tools/argos-mcp",
+        "en": "/en/tools/argos-mcp"
+      },
+      "installation": {
+        "type": "non-installable"
+      }
+    },
+    {
       "id": "ariadne",
       "kind": "plugin",
       "install": "ariadne",
@@ -96,6 +115,25 @@
       },
       "installation": {
         "marketplace": "claude plugin install cassandra@aranea"
+      }
+    },
+    {
+      "id": "chaos-mcp",
+      "kind": "site",
+      "display": {
+        "page": "chaos-mcp",
+        "readme": "https://github.com/AraneaDev/Chaos-MCP#readme"
+      },
+      "source": {
+        "type": "site-only"
+      },
+      "version": {},
+      "locales": {
+        "nl": "/tools/chaos-mcp",
+        "en": "/en/tools/chaos-mcp"
+      },
+      "installation": {
+        "type": "non-installable"
       }
     },
     {
@@ -234,6 +272,44 @@
       }
     },
     {
+      "id": "knossos-mcp",
+      "kind": "site",
+      "display": {
+        "page": "knossos-mcp",
+        "readme": "https://github.com/AraneaDev/Knossos-MCP#readme"
+      },
+      "source": {
+        "type": "site-only"
+      },
+      "version": {},
+      "locales": {
+        "nl": "/tools/knossos-mcp",
+        "en": "/en/tools/knossos-mcp"
+      },
+      "installation": {
+        "type": "non-installable"
+      }
+    },
+    {
+      "id": "mcp-observatory",
+      "kind": "site",
+      "display": {
+        "page": "mcp-observatory",
+        "readme": "https://mcpobservatory.com"
+      },
+      "source": {
+        "type": "site-only"
+      },
+      "version": {},
+      "locales": {
+        "nl": "/tools/mcp-observatory",
+        "en": "/en/tools/mcp-observatory"
+      },
+      "installation": {
+        "type": "non-installable"
+      }
+    },
+    {
       "id": "minos",
       "kind": "plugin",
       "install": "minos",
@@ -255,6 +331,44 @@
       },
       "installation": {
         "marketplace": "claude plugin install minos@aranea"
+      }
+    },
+    {
+      "id": "momus-mcp",
+      "kind": "site",
+      "display": {
+        "page": "momus-mcp",
+        "readme": "https://github.com/AraneaDev/Momus-MCP#readme"
+      },
+      "source": {
+        "type": "site-only"
+      },
+      "version": {},
+      "locales": {
+        "nl": "/tools/momus-mcp",
+        "en": "/en/tools/momus-mcp"
+      },
+      "installation": {
+        "type": "non-installable"
+      }
+    },
+    {
+      "id": "nekyia",
+      "kind": "site",
+      "display": {
+        "page": "nekyia",
+        "readme": "https://github.com/AraneaDev/Nekyia#readme"
+      },
+      "source": {
+        "type": "site-only"
+      },
+      "version": {},
+      "locales": {
+        "nl": "/tools/nekyia",
+        "en": "/en/tools/nekyia"
+      },
+      "installation": {
+        "type": "non-installable"
       }
     },
     {
