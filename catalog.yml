@@ -1,0 +1,62 @@
+marketplace: aranea
+entries:
+  - id: security-audit
+    kind: skill
+    install: security-audit
+    source: { type: local, path: skills/security-audit }
+    site: { page: security-audit, readme: skills/security-audit/SKILL.md }
+  - id: agent-config-audit
+    kind: skill
+    install: agent-config-audit
+    source: { type: local, path: skills/agent-config-audit }
+    site: { page: agent-config-audit, readme: skills/agent-config-audit/SKILL.md }
+  - id: codebase-scorecard
+    kind: skill
+    install: codebase-scorecard
+    source: { type: local, path: skills/codebase-scorecard }
+    site: { page: codebase-scorecard, readme: skills/codebase-scorecard/SKILL.md }
+  - id: comprehensive-audit
+    kind: skill
+    install: comprehensive-audit
+    source: { type: local, path: skills/comprehensive-audit }
+    site: { page: comprehensive-audit, readme: skills/comprehensive-audit/SKILL.md }
+  - id: decompose
+    kind: skill
+    install: decompose
+    source: { type: local, path: skills/decompose }
+    site: { page: decompose, readme: skills/decompose/SKILL.md }
+  - id: alpheus
+    kind: plugin
+    install: alpheus
+    source: { type: github, repository: AraneaDev/alpheus, commit: "d6958ba04e6aff488e522a40b4c3f30d37313553" }
+    site: { page: alpheus, readme: https://github.com/AraneaDev/alpheus#readme }
+  - id: ariadne
+    kind: plugin
+    install: ariadne
+    source: { type: github, repository: AraneaDev/ariadne, commit: "a35c0e0b9ac21f5211cb56a307e407d83c926ab5" }
+    site: { page: ariadne, readme: https://github.com/AraneaDev/ariadne#readme }
+  - id: cassandra
+    kind: plugin
+    install: cassandra
+    source: { type: github, repository: AraneaDev/cassandra, commit: "23fc7c4d675ebb97ebb7d3da9a0659f26a6953f9" }
+    site: { page: cassandra, readme: https://github.com/AraneaDev/cassandra#readme }
+  - id: claude-timestamp
+    kind: plugin
+    install: claude-timestamp
+    source: { type: github, repository: AraneaDev/claude-timestamp, commit: "8f9ce3a84a09882597aa767c7d4153c944b6466c" }
+    site: { page: claude-timestamp, readme: https://github.com/AraneaDev/claude-timestamp#readme }
+  - id: kairos
+    kind: plugin
+    install: kairos
+    source: { type: github, repository: AraneaDev/kairos, commit: "41a98954495ba9dff922f2c0f17e990f8bde0277" }
+    site: { page: kairos, readme: https://github.com/AraneaDev/kairos#readme }
+  - id: kanon
+    kind: plugin
+    install: kanon
+    source: { type: github, repository: AraneaDev/kanon, commit: "7c6caf525247a5c54b739606c369afead35137a7" }
+    site: { page: kanon, readme: https://github.com/AraneaDev/kanon#readme }
+  - id: minos
+    kind: plugin
+    install: minos
+    source: { type: github, repository: AraneaDev/minos, commit: "8dcc9981035572293e4ac4ee654b33123bd0e4ed" }
+    site: { page: minos, readme: https://github.com/AraneaDev/minos#readme }

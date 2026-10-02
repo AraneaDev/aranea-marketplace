@@ -1,0 +1,15 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "aranea",
+  "owner": { "name": "AraneaDev" },
+  "metadata": { "description": "Aranea first-party plugins and skills" },
+  "plugins": [
+    { "name": "alpheus", "source": { "source": "github", "repo": "AraneaDev/alpheus", "ref": "d6958ba04e6aff488e522a40b4c3f30d37313553" } },
+    { "name": "ariadne", "source": { "source": "github", "repo": "AraneaDev/ariadne", "ref": "a35c0e0b9ac21f5211cb56a307e407d83c926ab5" } },
+    { "name": "cassandra", "source": { "source": "github", "repo": "AraneaDev/cassandra", "ref": "23fc7c4d675ebb97ebb7d3da9a0659f26a6953f9" } },
+    { "name": "claude-timestamp", "source": { "source": "github", "repo": "AraneaDev/claude-timestamp", "ref": "8f9ce3a84a09882597aa767c7d4153c944b6466c" } },
+    { "name": "kairos", "source": { "source": "github", "repo": "AraneaDev/kairos", "ref": "41a98954495ba9dff922f2c0f17e990f8bde0277" } },
+    { "name": "kanon", "source": { "source": "github", "repo": "AraneaDev/kanon", "ref": "7c6caf525247a5c54b739606c369afead35137a7" } },
+    { "name": "minos", "source": { "source": "github", "repo": "AraneaDev/minos", "ref": "8dcc9981035572293e4ac4ee654b33123bd0e4ed" } }
+  ]
+}

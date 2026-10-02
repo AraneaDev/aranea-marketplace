@@ -1,0 +1,22 @@
+name: Validate marketplace
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run validate
+      - run: npm run --silent generate > /tmp/marketplace.json
+      - run: node -e "const fs=require('node:fs'); const a=JSON.parse(fs.readFileSync('.claude-plugin/marketplace.json')); const b=JSON.parse(fs.readFileSync('/tmp/marketplace.json')); if (JSON.stringify(a)!==JSON.stringify(b)) process.exit(1)"
