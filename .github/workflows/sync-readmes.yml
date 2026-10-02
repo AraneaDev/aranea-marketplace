@@ -10,12 +10,18 @@ on:
       - src/readme-snippets.ts
       - package-lock.json
   workflow_dispatch:
+    inputs:
+      approve:
+        description: 'Create README synchronization pull requests after reviewing the dry-run summary'
+        required: true
+        type: boolean
+        default: false
 
 permissions:
   contents: read
 
 jobs:
-  sync:
+  validate-and-dry-run:
     runs-on: ubuntu-latest
     steps:
       - name: Check out catalog
@@ -49,8 +55,25 @@ jobs:
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
+  write:
+    needs: validate-and-dry-run
+    if: github.event_name == 'workflow_dispatch' && inputs.approve == true
+    environment: marketplace-readme-sync
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out catalog
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
       - name: Create or update README pull requests
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
           GITHUB_APP_ID: ${{ secrets.GITHUB_APP_ID }}
           GITHUB_APP_INSTALLATION_ID: ${{ secrets.GITHUB_APP_INSTALLATION_ID }}

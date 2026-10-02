@@ -40,6 +40,9 @@ by the catalog, with these permissions:
 
 Configure the workflow secrets `GITHUB_APP_ID`, `GITHUB_APP_INSTALLATION_ID`,
 and `GITHUB_APP_PRIVATE_KEY`. The App should be installed only on the explicit
-catalog repositories. Dry-run mode accepts `GITHUB_TOKEN` or `GH_TOKEN`; with
-neither token, every target is reported as inaccessible without a network
-request.
+catalog repositories. Pushes to `main` only validate and publish a dry-run
+summary. Creating PRs requires a manual workflow dispatch with `approve: true`
+and approval of the protected `marketplace-readme-sync` environment. Configure
+that environment with the required reviewers before enabling write credentials.
+Dry-run mode accepts `GITHUB_TOKEN` or `GH_TOKEN`; with neither token, every
+target is reported as inaccessible without a network request.

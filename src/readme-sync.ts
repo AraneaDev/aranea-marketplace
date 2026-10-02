@@ -54,6 +54,18 @@ function positions(text: string, needle: string): number[] {
   return result;
 }
 
+function bytePositions(text: Buffer, needle: Buffer): number[] {
+  const result: number[] = [];
+  let from = 0;
+  while (from <= text.length - needle.length) {
+    const index = text.indexOf(needle, from);
+    if (index < 0) break;
+    result.push(index);
+    from = index + needle.length;
+  }
+  return result;
+}
+
 export function inspectInstallMarkers(readme: string, marker: string): MarkerResult {
   const { start, end } = markers(marker);
   const starts = positions(readme, start);
@@ -73,6 +85,23 @@ export function replaceInstallBlock(readme: string, marker: string, rendered: st
   const result = inspectInstallMarkers(readme, marker);
   if (!result.valid) throw new MarkerInspectionError(result);
   return readme.slice(0, result.startIndex) + rendered + readme.slice(result.endExclusive);
+}
+
+export function replaceInstallBlockBytes(readme: Buffer, marker: string, rendered: Buffer): Buffer {
+  const { start, end } = markers(marker);
+  const startMarker = Buffer.from(start);
+  const endMarker = Buffer.from(end);
+  const starts = bytePositions(readme, startMarker);
+  const ends = bytePositions(readme, endMarker);
+  const startIndex = starts[0];
+  const endIndex = ends[0];
+
+  if (starts.length !== 1 || ends.length !== 1 || startIndex > endIndex) {
+    const text = new TextDecoder('utf-8', { fatal: true }).decode(readme);
+    return Buffer.from(replaceInstallBlock(text, marker, rendered.toString('utf8')));
+  }
+
+  return Buffer.concat([readme.subarray(0, startIndex), rendered, readme.subarray(endIndex + endMarker.length)]);
 }
 
 export type SyncStatus = 'changed' | 'unchanged' | 'missing-markers' | 'inaccessible' | 'invalid';
@@ -126,6 +155,42 @@ function branchName(repository: string): string {
   return `aranea/marketplace-readme/${repository.replace(/[^A-Za-z0-9_.-]+/g, '-')}`;
 }
 
+function decodeReadme(content: string): Buffer | undefined {
+  const bytes = Buffer.from(content.replace(/\n/g, ''), 'base64');
+  try {
+    new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+    return bytes;
+  } catch {
+    return undefined;
+  }
+}
+
+function renderUpdatedReadme(readme: Buffer, rendered: Buffer): { updated?: Buffer; message?: string } {
+  const text = readme.toString('utf8');
+  const inspected = inspectInstallMarkers(text, 'aranea-install');
+  if (!inspected.valid) return { message: inspected.error.message };
+  return { updated: replaceInstallBlockBytes(readme, 'aranea-install', rendered) };
+}
+
+const pullRequestBody = `## Marketplace README synchronization
+
+- [ ] The target repository is explicitly listed in \`catalog.yml\`.
+- [ ] The change only updates the generated \`aranea-install\` block in \`README.md\`.
+- [ ] No site-only entry was given an installation block.
+- [ ] The catalog and generated artifacts validate.
+
+This PR was created or updated by the Aranea marketplace GitHub App.`;
+
+async function findOrCreatePullRequest(repository: string, branch: string, base: string, auth: string): Promise<{ pull?: any; error?: string }> {
+  const pulls = await githubRequest(`/repos/${repository}/pulls?state=open&head=${encodeURIComponent(`${repository.split('/')[0]}:${branch}`)}&base=${encodeURIComponent(base)}`, {}, auth);
+  if (!pulls.response.ok) return { error: `pull request lookup failed with HTTP ${pulls.response.status}` };
+  const pull = Array.isArray(pulls.body) ? pulls.body[0] : undefined;
+  if (pull) return { pull };
+  const created = await githubRequest(`/repos/${repository}/pulls`, { method: 'POST', body: JSON.stringify({ title: 'docs: synchronize marketplace install block', head: branch, base, body: pullRequestBody }) }, auth);
+  if (!created.response.ok) return { error: `pull request creation failed with HTTP ${created.response.status}` };
+  return { pull: created.body };
+}
+
 export async function syncRepository(repository: string, entry: CatalogEntry, mode: 'dry-run' | 'write'): Promise<SyncResult> {
   if (entry.kind === 'site' || !entry.install) return result(repository, entry, 'invalid', 'site-only or non-installable catalog entry cannot produce an install block', false);
   if (entry.source.type !== 'github' || entry.source.repository !== repository) return result(repository, entry, 'invalid', 'repository is not the explicitly cataloged GitHub source', false);
@@ -134,12 +199,13 @@ export async function syncRepository(repository: string, entry: CatalogEntry, mo
   let readme: GithubResponse;
   try { readme = await githubRequest(readmeUrl(repository), {}, auth); } catch (error) { return result(repository, entry, 'inaccessible', `README could not be fetched: ${String(error)}`, false); }
   if (!readme.response.ok || typeof readme.body?.content !== 'string') return result(repository, entry, 'inaccessible', `README request failed with HTTP ${readme.response.status}`, false);
-  const text = Buffer.from(readme.body.content.replace(/\n/g, ''), 'base64').toString('utf8');
-  const inspected = inspectInstallMarkers(text, 'aranea-install');
-  if (!inspected.valid) return result(repository, entry, 'missing-markers', inspected.error.message, false);
+  const sourceReadme = decodeReadme(readme.body.content);
+  if (!sourceReadme) return result(repository, entry, 'invalid', 'README is not valid UTF-8; no write made', false);
   const rendered = renderInstallBlock(entry, generateSiteFeed({ marketplace: 'aranea', entries: [entry] }));
-  const updated = replaceInstallBlock(text, 'aranea-install', rendered);
-  if (updated === text) return result(repository, entry, 'unchanged', 'README install block is already current', false);
+  const renderedBytes = Buffer.from(rendered);
+  const sourceUpdate = renderUpdatedReadme(sourceReadme, renderedBytes);
+  if (!sourceUpdate.updated) return result(repository, entry, 'missing-markers', sourceUpdate.message!, false);
+  if (sourceUpdate.updated.equals(sourceReadme)) return result(repository, entry, 'unchanged', 'README install block is already current', false);
   if (mode === 'dry-run') return result(repository, entry, 'changed', 'README install block would change in a pull request');
 
   const branch = branchName(repository);
@@ -154,18 +220,21 @@ export async function syncRepository(repository: string, entry: CatalogEntry, mo
     if (!created.response.ok) return result(repository, entry, 'inaccessible', `branch creation failed with HTTP ${created.response.status}`, false);
   } else if (!existingRef.response.ok) return result(repository, entry, 'inaccessible', `branch lookup failed with HTTP ${existingRef.response.status}`, false);
   const contents = await githubRequest(`${readmeUrl(repository)}?ref=${encodeURIComponent(branch)}`, {}, auth);
-  if (!contents.response.ok || typeof contents.body?.sha !== 'string') return result(repository, entry, 'inaccessible', `branch README request failed with HTTP ${contents.response.status}`, false);
-  const update = await githubRequest(readmeUrl(repository), { method: 'PUT', body: JSON.stringify({ message: 'docs: synchronize marketplace install block', content: Buffer.from(updated).toString('base64'), sha: contents.body.sha, branch }) }, auth);
-  if (!update.response.ok) return result(repository, entry, 'inaccessible', `README update failed with HTTP ${update.response.status}`, false);
-  const pulls = await githubRequest(`/repos/${repository}/pulls?state=open&head=${encodeURIComponent(`${repository.split('/')[0]}:${branch}`)}&base=${encodeURIComponent(base)}`, {}, auth);
-  if (!pulls.response.ok) return result(repository, entry, 'inaccessible', `pull request lookup failed with HTTP ${pulls.response.status}`, true);
-  let pull = Array.isArray(pulls.body) ? pulls.body[0] : undefined;
-  if (!pull) {
-    const created = await githubRequest(`/repos/${repository}/pulls`, { method: 'POST', body: JSON.stringify({ title: 'docs: synchronize marketplace install block', head: branch, base, body: 'Automated update of the Aranea marketplace install block.' }) }, auth);
-    if (!created.response.ok) return result(repository, entry, 'inaccessible', `pull request creation failed with HTTP ${created.response.status}`, true);
-    pull = created.body;
+  if (!contents.response.ok || typeof contents.body?.sha !== 'string' || typeof contents.body?.content !== 'string') return result(repository, entry, 'inaccessible', `branch README request failed with HTTP ${contents.response.status}`, false);
+  const branchReadme = decodeReadme(contents.body.content);
+  if (!branchReadme) return result(repository, entry, 'invalid', 'branch README is not valid UTF-8; no write made', false);
+  const branchUpdate = renderUpdatedReadme(branchReadme, renderedBytes);
+  if (!branchUpdate.updated) return result(repository, entry, 'missing-markers', branchUpdate.message!, false);
+  if (branchUpdate.updated.equals(branchReadme)) {
+    const pull = await findOrCreatePullRequest(repository, branch, base, auth);
+    if (pull.error) return result(repository, entry, 'inaccessible', pull.error, false);
+    return { ...result(repository, entry, 'unchanged', 'README install block is already current on the synchronization branch', false), pullRequestUrl: pull.pull?.html_url };
   }
-  return { ...result(repository, entry, 'changed', 'README updated and pull request created or reused'), pullRequestUrl: pull?.html_url };
+  const update = await githubRequest(readmeUrl(repository), { method: 'PUT', body: JSON.stringify({ message: 'docs: synchronize marketplace install block', content: branchUpdate.updated.toString('base64'), sha: contents.body.sha, branch }) }, auth);
+  if (!update.response.ok) return result(repository, entry, 'inaccessible', `README update failed with HTTP ${update.response.status}`, false);
+  const pull = await findOrCreatePullRequest(repository, branch, base, auth);
+  if (pull.error) return result(repository, entry, 'inaccessible', pull.error, true);
+  return { ...result(repository, entry, 'changed', 'README updated and pull request created or reused'), pullRequestUrl: pull.pull?.html_url };
 }
 
 async function main(): Promise<void> {
