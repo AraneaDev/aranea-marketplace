@@ -56,9 +56,10 @@ jobs:
 
       # A pull request opened with the workflow's own token does not trigger other
       # workflows, so `validate` would never report and auto-merge would never
-      # fire. The App's token does trigger them.
+      # fire. The App's token does trigger them. It is created on every run, not
+      # only when there is something to bump, so broken App credentials fail the
+      # next scheduled run instead of the first release that needs them.
       - name: Create App token
-        if: steps.bump.outputs.changed == 'true'
         id: app
         uses: actions/create-github-app-token@v2
         with:
