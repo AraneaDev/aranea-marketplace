@@ -1,0 +1,88 @@
+name: Bump plugin pins
+
+# Moves each GitHub plugin's pin to its latest published release and merges the
+# change once `validate` passes. src/bump-pins.ts only proposes a commit that is
+# ahead of the current pin and carries .claude-plugin/plugin.json.
+on:
+  schedule:
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bump-pins
+  cancel-in-progress: false
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    # Holds the App credentials. No required reviewers: a run has to be able to
+    # finish on its own. Deployments are limited to protected branches.
+    environment: marketplace-pin-bump
+    steps:
+      - name: Check out catalog
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Find newer releases
+        id: bump
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          BUMP_SUMMARY: ${{ runner.temp }}/bump-summary.md
+        run: |
+          ./node_modules/.bin/tsx src/bump-pins.ts --write
+          if git diff --quiet -- catalog.yml; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Regenerate and validate
+        if: steps.bump.outputs.changed == 'true'
+        run: |
+          npm run generate
+          npm run validate
+          npm run validate:manifest
+
+      # A pull request opened with the workflow's own token does not trigger other
+      # workflows, so `validate` would never report and auto-merge would never
+      # fire. The App's token does trigger them.
+      - name: Create App token
+        if: steps.bump.outputs.changed == 'true'
+        id: app
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.PIN_BUMP_APP_ID }}
+          private-key: ${{ secrets.PIN_BUMP_APP_PRIVATE_KEY }}
+
+      - name: Open or update the pull request
+        if: steps.bump.outputs.changed == 'true'
+        id: pr
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ steps.app.outputs.token }}
+          branch: bump/plugin-pins
+          delete-branch: true
+          commit-message: 'chore: bump plugin pins to their latest releases'
+          title: 'chore: bump plugin pins to their latest releases'
+          body-path: ${{ runner.temp }}/bump-summary.md
+          add-paths: |
+            catalog.yml
+            generated/**
+            .claude-plugin/marketplace.json
+
+      - name: Merge when validate passes
+        if: steps.pr.outputs.pull-request-number != ''
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+        run: gh pr merge "${{ steps.pr.outputs.pull-request-number }}" --auto --squash --repo "${{ github.repository }}"
