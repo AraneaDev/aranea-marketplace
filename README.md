@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src=".github/banner.svg" alt="The Aranea spider hanging on its thread in the middle of a web" width="100%">
+
 # Aranea marketplace
 
 **The web every Aranea plugin hangs from.**
