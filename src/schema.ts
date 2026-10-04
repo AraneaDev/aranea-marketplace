@@ -25,7 +25,11 @@ export type CatalogEntry = {
 export type Catalog = { marketplace: string; entries: CatalogEntry[] };
 export type ValidationProblem = string;
 
-export type MarketplaceSource = string | { source: 'github'; repo: string; ref: string };
+// GitHub plugins are emitted as `url` sources rather than the `github` shorthand:
+// the shorthand clones over SSH first, which fails on machines without a GitHub
+// key or with port 22 blocked. An https URL always clones over HTTPS, and `sha`
+// pins the exact commit.
+export type MarketplaceSource = string | { source: 'url'; url: string; sha: string };
 export type MarketplaceManifest = {
   $schema: string;
   name: string;

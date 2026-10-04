@@ -21,7 +21,7 @@ type MarketplaceContract = {
   pluginRequired: string[];
   pluginProperties: string[];
   localSource: { pathPattern: string; metadataPath: string; metadataRequired: string[]; skillPath: string };
-  githubSource: { required: string[]; properties: string[]; source: string; repoPattern: string; refPattern: string };
+  githubSource: { required: string[]; properties: string[]; source: string; urlPattern: string; shaPattern: string };
 };
 
 const contract = (): MarketplaceContract => JSON.parse(
@@ -39,7 +39,7 @@ export function generateMarketplace(catalog: Catalog): MarketplaceManifest {
     plugins: ordered(catalog).filter((entry) => entry.kind !== 'site').map((entry) => {
       let source: MarketplaceSource;
       if (entry.source.type === 'local') source = `./${entry.source.path}`;
-      else if (entry.source.type === 'github') source = { source: 'github', repo: entry.source.repository, ref: entry.source.commit };
+      else if (entry.source.type === 'github') source = { source: 'url', url: `https://github.com/${entry.source.repository}.git`, sha: entry.source.commit };
       else throw new Error(`site-only entry ${entry.id} cannot appear in the marketplace manifest`);
       return { name: entry.install!, source };
     }),
@@ -149,9 +149,9 @@ export function validateMarketplaceManifest(manifest: unknown, root: string): st
       const github = source as Record<string, unknown>;
       for (const field of specification.githubSource.required) if (!(field in github)) problems.push(`${location}.source.${field} is required`);
       for (const field of Object.keys(github)) if (!specification.githubSource.properties.includes(field)) problems.push(`${location}.source has unexpected property ${field}`);
-      if (github.source !== specification.githubSource.source) problems.push(`${location}.source.source must be github`);
-      if (typeof github.repo !== 'string' || !new RegExp(specification.githubSource.repoPattern).test(github.repo)) problems.push(`${location}.source.repo is invalid`);
-      if (typeof github.ref !== 'string' || !new RegExp(specification.githubSource.refPattern).test(github.ref)) problems.push(`${location}.source.ref must be a lowercase 40-character SHA`);
+      if (github.source !== specification.githubSource.source) problems.push(`${location}.source.source must be ${specification.githubSource.source}`);
+      if (typeof github.url !== 'string' || !new RegExp(specification.githubSource.urlPattern).test(github.url)) problems.push(`${location}.source.url must be an HTTPS GitHub URL`);
+      if (typeof github.sha !== 'string' || !new RegExp(specification.githubSource.shaPattern).test(github.sha)) problems.push(`${location}.source.sha must be a lowercase 40-character SHA`);
     } else problems.push(`${location}.source must be a local path or GitHub source`);
   }
   return problems;

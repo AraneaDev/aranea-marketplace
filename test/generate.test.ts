@@ -18,7 +18,7 @@ const catalog: Catalog = {
 const projectRoot = fileURLToPath(new URL('..', import.meta.url));
 
 describe('catalog generation', () => {
-  it('generates deterministic Claude sources for local and GitHub entries', () => {
+  it('generates deterministic Claude sources, cloning GitHub entries over HTTPS', () => {
     expect(generateMarketplace(catalog)).toEqual({
       $schema: 'https://anthropic.com/claude-code/marketplace.schema.json',
       name: 'aranea',
@@ -26,7 +26,7 @@ describe('catalog generation', () => {
       metadata: { description: 'Aranea first-party plugins and skills' },
       plugins: [
         { name: 'alpha', source: './plugins/alpha' },
-        { name: 'zeta', source: { source: 'github', repo: 'AraneaDev/zeta', ref: '0123456789abcdef0123456789abcdef01234567' } },
+        { name: 'zeta', source: { source: 'url', url: 'https://github.com/AraneaDev/zeta.git', sha: '0123456789abcdef0123456789abcdef01234567' } },
       ],
     });
   });
@@ -145,9 +145,19 @@ describe('catalog generation', () => {
       expect(localProblems.join('\n')).toMatch(/plugin\.json|SKILL\.md/);
       const githubProblems = validateMarketplaceManifest({
         ...generateMarketplace(catalog),
-        plugins: [{ name: 'zeta', source: { source: 'github', repo: 'AraneaDev/zeta', ref: 'main' } }],
+        plugins: [{ name: 'zeta', source: { source: 'url', url: 'https://github.com/AraneaDev/zeta.git', sha: 'main' } }],
       }, root);
       expect(githubProblems.join('\n')).toMatch(/40-character SHA/);
+      const sshProblems = validateMarketplaceManifest({
+        ...generateMarketplace(catalog),
+        plugins: [{ name: 'zeta', source: { source: 'url', url: 'git@github.com:AraneaDev/zeta.git', sha: '0123456789abcdef0123456789abcdef01234567' } }],
+      }, root);
+      expect(sshProblems.join('\n')).toMatch(/HTTPS GitHub URL/);
+      const shorthandProblems = validateMarketplaceManifest({
+        ...generateMarketplace(catalog),
+        plugins: [{ name: 'zeta', source: { source: 'github', repo: 'AraneaDev/zeta', sha: '0123456789abcdef0123456789abcdef01234567' } }],
+      }, root);
+      expect(shorthandProblems.join('\n')).toMatch(/source\.source must be url/);
     } finally {
       rmSync(root, { recursive: true, force: true });
     }
@@ -160,7 +170,7 @@ describe('catalog generation', () => {
       expect(validateMarketplaceManifest({ ...manifest, extra: true }, root).join('\n')).toMatch(/top-level property.*extra/);
       expect(validateMarketplaceManifest({
         ...manifest,
-        plugins: [{ name: 'zeta', source: { source: 'github', repo: 'AraneaDev/zeta', ref: '0123456789abcdef0123456789abcdef01234567', extra: true } }],
+        plugins: [{ name: 'zeta', source: { source: 'url', url: 'https://github.com/AraneaDev/zeta.git', sha: '0123456789abcdef0123456789abcdef01234567', extra: true } }],
       }, root).join('\n')).toMatch(/source has unexpected/);
       expect(validateMarketplaceManifest({
         ...manifest,

@@ -15,10 +15,10 @@
     "skillPath": "skills/{name}/SKILL.md"
   },
   "githubSource": {
-    "required": ["source", "repo", "ref"],
-    "properties": ["source", "repo", "ref"],
-    "source": "github",
-    "repoPattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$",
-    "refPattern": "^[0-9a-f]{40}$"
+    "required": ["source", "url", "sha"],
+    "properties": ["source", "url", "sha"],
+    "source": "url",
+    "urlPattern": "^https://github\\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+\\.git$",
+    "shaPattern": "^[0-9a-f]{40}$"
   }
 }
