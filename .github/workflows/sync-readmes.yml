@@ -75,7 +75,7 @@ jobs:
 
       - name: Create or update README pull requests
         env:
-          GITHUB_APP_ID: ${{ secrets.GITHUB_APP_ID }}
-          GITHUB_APP_INSTALLATION_ID: ${{ secrets.GITHUB_APP_INSTALLATION_ID }}
-          GITHUB_APP_PRIVATE_KEY: ${{ secrets.GITHUB_APP_PRIVATE_KEY }}
+          GITHUB_APP_ID: ${{ secrets.README_SYNC_APP_ID }}
+          GITHUB_APP_INSTALLATION_ID: ${{ secrets.README_SYNC_APP_INSTALLATION_ID }}
+          GITHUB_APP_PRIVATE_KEY: ${{ secrets.README_SYNC_APP_PRIVATE_KEY }}
         run: ./node_modules/.bin/tsx src/readme-sync.ts --mode=write
