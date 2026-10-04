@@ -8,6 +8,7 @@
 [![Validate](https://img.shields.io/github/actions/workflow/status/AraneaDev/aranea-marketplace/validate.yml?label=validate)](https://github.com/AraneaDev/aranea-marketplace/actions/workflows/validate.yml)
 [![Pin bump](https://img.shields.io/github/actions/workflow/status/AraneaDev/aranea-marketplace/bump-pins.yml?label=pin%20bump)](https://github.com/AraneaDev/aranea-marketplace/actions/workflows/bump-pins.yml)
 [![Site](https://img.shields.io/badge/site-aranea--development.nl-0b7285)](https://aranea-development.nl/en/tools)
+[![License](https://img.shields.io/github/license/AraneaDev/aranea-marketplace?label=license&color=yellow)](./LICENSE)
 [![Last commit](https://img.shields.io/github/last-commit/AraneaDev/aranea-marketplace?label=last%20commit)](https://github.com/AraneaDev/aranea-marketplace/commits/main)
 [![Conventional Commits](https://img.shields.io/badge/commits-conventional-fe5196?logo=conventionalcommits&logoColor=white)](https://www.conventionalcommits.org/)
 
@@ -154,6 +155,10 @@ npm run validate:manifest  # the manifest against Claude Code's marketplace cont
 
 Generated files are never edited by hand. Change `catalog.yml` or the plugin sources and
 regenerate.
+
+## License
+
+MIT. Each plugin carries its own license in its own repository.
 
 ---
 
