@@ -38,8 +38,9 @@ by the catalog, with these permissions:
   repository).
 - Metadata: read (GitHub's mandatory repository metadata permission).
 
-Configure the workflow secrets `GITHUB_APP_ID`, `GITHUB_APP_INSTALLATION_ID`,
-and `GITHUB_APP_PRIVATE_KEY`. The App should be installed only on the explicit
+Configure the secrets `README_SYNC_APP_ID`, `README_SYNC_APP_INSTALLATION_ID`,
+and `README_SYNC_APP_PRIVATE_KEY` on the `marketplace-readme-sync` environment
+(GitHub rejects secret names that start with `GITHUB_`). The App should be installed only on the explicit
 catalog repositories. Pushes to `main` only validate and publish a dry-run
 summary. Creating PRs requires a manual workflow dispatch with `approve: true`
 and approval of the protected `marketplace-readme-sync` environment. Configure
