@@ -87,7 +87,7 @@ describe('catalog generation', () => {
   it('publishes all current site-only tool routes without marketplace installation commands', () => {
     const published = readCatalog(projectRoot);
     const feed = generateSiteFeed(published);
-    const ids = ['argos-mcp', 'chaos-mcp', 'knossos-mcp', 'mcp-observatory', 'momus-mcp', 'nekyia'];
+    const ids = ['argos-mcp', 'chaos-mcp', 'knossos', 'mcp-observatory', 'momus-mcp', 'nekyia'];
     const siteEntries = feed.entries.filter((entry) => entry.kind === 'site');
 
     expect(siteEntries.map((entry) => entry.id)).toEqual(ids);
