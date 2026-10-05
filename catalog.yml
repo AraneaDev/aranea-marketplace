@@ -76,13 +76,13 @@ entries:
       readme: https://github.com/AraneaDev/Chaos-MCP#readme
       locales: { nl: /tools/chaos-mcp, en: /en/tools/chaos-mcp }
     installation: { type: non-installable }
-  - id: knossos-mcp
+  - id: knossos
     kind: site
     source: { type: site-only }
     site:
-      page: knossos-mcp
-      readme: https://github.com/AraneaDev/Knossos-MCP#readme
-      locales: { nl: /tools/knossos-mcp, en: /en/tools/knossos-mcp }
+      page: knossos
+      readme: https://github.com/AraneaDev/knossos#readme
+      locales: { nl: /tools/knossos, en: /en/tools/knossos }
     installation: { type: non-installable }
   - id: mcp-observatory
     kind: site

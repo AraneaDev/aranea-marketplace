@@ -272,19 +272,19 @@
       }
     },
     {
-      "id": "knossos-mcp",
+      "id": "knossos",
       "kind": "site",
       "display": {
-        "page": "knossos-mcp",
-        "readme": "https://github.com/AraneaDev/Knossos-MCP#readme"
+        "page": "knossos",
+        "readme": "https://github.com/AraneaDev/knossos#readme"
       },
       "source": {
         "type": "site-only"
       },
       "version": {},
       "locales": {
-        "nl": "/tools/knossos-mcp",
-        "en": "/en/tools/knossos-mcp"
+        "nl": "/tools/knossos",
+        "en": "/en/tools/knossos"
       },
       "installation": {
         "type": "non-installable"
