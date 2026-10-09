@@ -38,7 +38,7 @@ entries:
   - id: cassandra
     kind: plugin
     install: cassandra
-    source: { type: github, repository: AraneaDev/cassandra, commit: "83c970669c0ae304166a9e1721b581be1533db1a" }
+    source: { type: github, repository: AraneaDev/cassandra, commit: "7a5db73157c81a0ae9c0c71958ada080fd46b6cb" }
     site: { page: cassandra, readme: https://github.com/AraneaDev/cassandra#readme }
   - id: claude-timestamp
     kind: plugin
