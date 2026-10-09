@@ -104,10 +104,10 @@
       "source": {
         "type": "github",
         "repository": "AraneaDev/cassandra",
-        "commit": "2dbdd2fe47283a9eaf5908b9b087b8568c266838"
+        "commit": "4375ff98050d8839b141f4a40b08a8273db9ec0e"
       },
       "version": {
-        "pin": "2dbdd2fe47283a9eaf5908b9b087b8568c266838"
+        "pin": "4375ff98050d8839b141f4a40b08a8273db9ec0e"
       },
       "locales": {
         "nl": "/tools/cassandra",
