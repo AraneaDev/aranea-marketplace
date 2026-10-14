@@ -43,7 +43,7 @@ entries:
   - id: claude-timestamp
     kind: plugin
     install: claude-timestamp
-    source: { type: github, repository: AraneaDev/claude-timestamp, commit: "8f9ce3a84a09882597aa767c7d4153c944b6466c" }
+    source: { type: github, repository: AraneaDev/claude-timestamp, commit: "622756bcc7be133cdb367b463c40aaa963f56bd3" }
     site: { page: claude-timestamp, readme: https://github.com/AraneaDev/claude-timestamp#readme }
   - id: kairos
     kind: plugin

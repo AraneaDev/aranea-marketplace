@@ -147,10 +147,10 @@
       "source": {
         "type": "github",
         "repository": "AraneaDev/claude-timestamp",
-        "commit": "8f9ce3a84a09882597aa767c7d4153c944b6466c"
+        "commit": "622756bcc7be133cdb367b463c40aaa963f56bd3"
       },
       "version": {
-        "pin": "8f9ce3a84a09882597aa767c7d4153c944b6466c"
+        "pin": "622756bcc7be133cdb367b463c40aaa963f56bd3"
       },
       "locales": {
         "nl": "/tools/claude-timestamp",
