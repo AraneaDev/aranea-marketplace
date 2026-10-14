@@ -43,7 +43,7 @@ entries:
   - id: timestamps
     kind: plugin
     install: timestamps
-    source: { type: github, repository: AraneaDev/timestamps, commit: "feac3dc3234eb26c1e81526b419fb7d1331bcc6b" }
+    source: { type: github, repository: AraneaDev/timestamps, commit: "192dc8741387ee2d37765042abc1ad6a71a1cbcb" }
     site: { page: timestamps, readme: https://github.com/AraneaDev/timestamps#readme }
   - id: kairos
     kind: plugin
