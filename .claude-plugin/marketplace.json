@@ -37,14 +37,6 @@
       }
     },
     {
-      "name": "claude-timestamp",
-      "source": {
-        "source": "url",
-        "url": "https://github.com/AraneaDev/claude-timestamp.git",
-        "sha": "622756bcc7be133cdb367b463c40aaa963f56bd3"
-      }
-    },
-    {
       "name": "codebase-scorecard",
       "source": "./plugins/codebase-scorecard"
     },
@@ -83,6 +75,14 @@
     {
       "name": "security-audit",
       "source": "./plugins/security-audit"
+    },
+    {
+      "name": "timestamps",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/AraneaDev/timestamps.git",
+        "sha": "feac3dc3234eb26c1e81526b419fb7d1331bcc6b"
+      }
     }
   ]
 }

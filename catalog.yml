@@ -40,11 +40,11 @@ entries:
     install: cassandra
     source: { type: github, repository: AraneaDev/cassandra, commit: "7a5db73157c81a0ae9c0c71958ada080fd46b6cb" }
     site: { page: cassandra, readme: https://github.com/AraneaDev/cassandra#readme }
-  - id: claude-timestamp
+  - id: timestamps
     kind: plugin
-    install: claude-timestamp
-    source: { type: github, repository: AraneaDev/claude-timestamp, commit: "622756bcc7be133cdb367b463c40aaa963f56bd3" }
-    site: { page: claude-timestamp, readme: https://github.com/AraneaDev/claude-timestamp#readme }
+    install: timestamps
+    source: { type: github, repository: AraneaDev/timestamps, commit: "feac3dc3234eb26c1e81526b419fb7d1331bcc6b" }
+    site: { page: timestamps, readme: https://github.com/AraneaDev/timestamps#readme }
   - id: kairos
     kind: plugin
     install: kairos

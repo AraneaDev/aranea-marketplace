@@ -137,30 +137,6 @@
       }
     },
     {
-      "id": "claude-timestamp",
-      "kind": "plugin",
-      "install": "claude-timestamp",
-      "display": {
-        "page": "claude-timestamp",
-        "readme": "https://github.com/AraneaDev/claude-timestamp#readme"
-      },
-      "source": {
-        "type": "github",
-        "repository": "AraneaDev/claude-timestamp",
-        "commit": "622756bcc7be133cdb367b463c40aaa963f56bd3"
-      },
-      "version": {
-        "pin": "622756bcc7be133cdb367b463c40aaa963f56bd3"
-      },
-      "locales": {
-        "nl": "/tools/claude-timestamp",
-        "en": "/en/tools/claude-timestamp"
-      },
-      "installation": {
-        "marketplace": "claude plugin install claude-timestamp@aranea"
-      }
-    },
-    {
       "id": "codebase-scorecard",
       "kind": "skill",
       "install": "codebase-scorecard",
@@ -390,6 +366,30 @@
       },
       "installation": {
         "marketplace": "claude plugin install security-audit@aranea"
+      }
+    },
+    {
+      "id": "timestamps",
+      "kind": "plugin",
+      "install": "timestamps",
+      "display": {
+        "page": "timestamps",
+        "readme": "https://github.com/AraneaDev/timestamps#readme"
+      },
+      "source": {
+        "type": "github",
+        "repository": "AraneaDev/timestamps",
+        "commit": "feac3dc3234eb26c1e81526b419fb7d1331bcc6b"
+      },
+      "version": {
+        "pin": "feac3dc3234eb26c1e81526b419fb7d1331bcc6b"
+      },
+      "locales": {
+        "nl": "/tools/timestamps",
+        "en": "/en/tools/timestamps"
+      },
+      "installation": {
+        "marketplace": "claude plugin install timestamps@aranea"
       }
     }
   ]
