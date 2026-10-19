@@ -45,11 +45,6 @@ entries:
     install: timestamps
     source: { type: github, repository: AraneaDev/timestamps, commit: "6e50034d26590d4c3ea32b04e1a3c832a7211c4a" }
     site: { page: timestamps, readme: https://github.com/AraneaDev/timestamps#readme }
-  - id: kairos
-    kind: plugin
-    install: kairos
-    source: { type: github, repository: AraneaDev/kairos, commit: "41a98954495ba9dff922f2c0f17e990f8bde0277" }
-    site: { page: kairos, readme: https://github.com/AraneaDev/kairos#readme }
   - id: kanon
     kind: plugin
     install: kanon
@@ -107,4 +102,12 @@ entries:
       page: nekyia
       readme: https://github.com/AraneaDev/Nekyia#readme
       locales: { nl: /tools/nekyia, en: /en/tools/nekyia }
+    installation: { type: non-installable }
+  - id: phrourion
+    kind: site
+    source: { type: site-only }
+    site:
+      page: phrourion
+      readme: https://github.com/AraneaDev/phrourion#readme
+      locales: { nl: /tools/phrourion, en: /en/tools/phrourion }
     installation: { type: non-installable }

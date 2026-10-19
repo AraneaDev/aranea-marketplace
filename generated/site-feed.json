@@ -200,30 +200,6 @@
       }
     },
     {
-      "id": "kairos",
-      "kind": "plugin",
-      "install": "kairos",
-      "display": {
-        "page": "kairos",
-        "readme": "https://github.com/AraneaDev/kairos#readme"
-      },
-      "source": {
-        "type": "github",
-        "repository": "AraneaDev/kairos",
-        "commit": "41a98954495ba9dff922f2c0f17e990f8bde0277"
-      },
-      "version": {
-        "pin": "41a98954495ba9dff922f2c0f17e990f8bde0277"
-      },
-      "locales": {
-        "nl": "/tools/kairos",
-        "en": "/en/tools/kairos"
-      },
-      "installation": {
-        "marketplace": "claude plugin install kairos@aranea"
-      }
-    },
-    {
       "id": "kanon",
       "kind": "plugin",
       "install": "kanon",
@@ -342,6 +318,25 @@
       "locales": {
         "nl": "/tools/nekyia",
         "en": "/en/tools/nekyia"
+      },
+      "installation": {
+        "type": "non-installable"
+      }
+    },
+    {
+      "id": "phrourion",
+      "kind": "site",
+      "display": {
+        "page": "phrourion",
+        "readme": "https://github.com/AraneaDev/phrourion#readme"
+      },
+      "source": {
+        "type": "site-only"
+      },
+      "version": {},
+      "locales": {
+        "nl": "/tools/phrourion",
+        "en": "/en/tools/phrourion"
       },
       "installation": {
         "type": "non-installable"
