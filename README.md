@@ -53,8 +53,9 @@ Three kinds of entry, each with its own place:
 - **Skills** live here, under `plugins/<id>/`. Each is a real plugin root, with
   `.claude-plugin/plugin.json` and `skills/<id>/SKILL.md`, and installs from this
   repository's `main`.
-- **Site-only tools** are things you open or run rather than install, such as the MCP
-  servers. They appear in the site feed and nowhere else.
+- **Site-only tools** have their own setup, such as standalone CLIs and MCP servers.
+  They appear in the site feed, with installation instructions on their tool pages,
+  and are excluded from the Claude Code plugin manifest and README install blocks.
 
 ## What is generated
 

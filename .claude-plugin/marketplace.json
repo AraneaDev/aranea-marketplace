@@ -49,14 +49,6 @@
       "source": "./plugins/decompose"
     },
     {
-      "name": "kairos",
-      "source": {
-        "source": "url",
-        "url": "https://github.com/AraneaDev/kairos.git",
-        "sha": "41a98954495ba9dff922f2c0f17e990f8bde0277"
-      }
-    },
-    {
       "name": "kanon",
       "source": {
         "source": "url",
