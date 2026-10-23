@@ -53,7 +53,7 @@ entries:
   - id: minos
     kind: plugin
     install: minos
-    source: { type: github, repository: AraneaDev/minos, commit: "929f1f18adf7c8e0b97d7fbbe81a7cb65b1c6d33" }
+    source: { type: github, repository: AraneaDev/minos, commit: "a5127a937f29ff6fe51d033e573cd037c646a70c" }
     site: { page: minos, readme: https://github.com/AraneaDev/minos#readme }
   - id: argos-mcp
     kind: site
