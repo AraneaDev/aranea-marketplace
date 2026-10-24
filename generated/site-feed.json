@@ -272,10 +272,10 @@
       "source": {
         "type": "github",
         "repository": "AraneaDev/minos",
-        "commit": "9d470d2427654b4037e87e559a15f2dce375abff"
+        "commit": "a0ff1cf7c4c901cbea4956bec7396b1b283f787d"
       },
       "version": {
-        "pin": "9d470d2427654b4037e87e559a15f2dce375abff"
+        "pin": "a0ff1cf7c4c901cbea4956bec7396b1b283f787d"
       },
       "locales": {
         "nl": "/tools/minos",
