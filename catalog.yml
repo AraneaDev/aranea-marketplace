@@ -48,7 +48,7 @@ entries:
   - id: kanon
     kind: plugin
     install: kanon
-    source: { type: github, repository: AraneaDev/kanon, commit: "86a3d54a72a670f52a617b267ff11eb1c8f2b173" }
+    source: { type: github, repository: AraneaDev/kanon, commit: "b5dd1875c411006599e0445e3460bc20cd1d1071" }
     site: { page: kanon, readme: https://github.com/AraneaDev/kanon#readme }
   - id: minos
     kind: plugin
