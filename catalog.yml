@@ -48,12 +48,12 @@ entries:
   - id: kanon
     kind: plugin
     install: kanon
-    source: { type: github, repository: AraneaDev/kanon, commit: "7c6caf525247a5c54b739606c369afead35137a7" }
+    source: { type: github, repository: AraneaDev/kanon, commit: "7068b2a181073b941609f62bb7a17200efe293f0" }
     site: { page: kanon, readme: https://github.com/AraneaDev/kanon#readme }
   - id: minos
     kind: plugin
     install: minos
-    source: { type: github, repository: AraneaDev/minos, commit: "a5127a937f29ff6fe51d033e573cd037c646a70c" }
+    source: { type: github, repository: AraneaDev/minos, commit: "0f930271ff0ada8a71d86133465cf57393e22127" }
     site: { page: minos, readme: https://github.com/AraneaDev/minos#readme }
   - id: argos-mcp
     kind: site
