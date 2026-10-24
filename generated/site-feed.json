@@ -210,10 +210,10 @@
       "source": {
         "type": "github",
         "repository": "AraneaDev/kanon",
-        "commit": "7068b2a181073b941609f62bb7a17200efe293f0"
+        "commit": "86a3d54a72a670f52a617b267ff11eb1c8f2b173"
       },
       "version": {
-        "pin": "7068b2a181073b941609f62bb7a17200efe293f0"
+        "pin": "86a3d54a72a670f52a617b267ff11eb1c8f2b173"
       },
       "locales": {
         "nl": "/tools/kanon",
