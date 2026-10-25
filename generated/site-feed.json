@@ -51,19 +51,19 @@
       }
     },
     {
-      "id": "argos-mcp",
+      "id": "argos",
       "kind": "site",
       "display": {
-        "page": "argos-mcp",
-        "readme": "https://github.com/AraneaDev/Argos-MCP#readme"
+        "page": "argos",
+        "readme": "https://github.com/AraneaDev/argos#readme"
       },
       "source": {
         "type": "site-only"
       },
       "version": {},
       "locales": {
-        "nl": "/tools/argos-mcp",
-        "en": "/en/tools/argos-mcp"
+        "nl": "/tools/argos",
+        "en": "/en/tools/argos"
       },
       "installation": {
         "type": "non-installable"
