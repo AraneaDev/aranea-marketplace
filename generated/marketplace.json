@@ -53,7 +53,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/AraneaDev/kanon.git",
-        "sha": "7c6caf525247a5c54b739606c369afead35137a7"
+        "sha": "2c92d3457f3e203072b086e6d6b557c335bb4285"
       }
     },
     {
@@ -61,7 +61,7 @@
       "source": {
         "source": "url",
         "url": "https://github.com/AraneaDev/minos.git",
-        "sha": "8dcc9981035572293e4ac4ee654b33123bd0e4ed"
+        "sha": "ac4c5c632b2e40040588ade9ff93883aba763c5a"
       }
     },
     {
