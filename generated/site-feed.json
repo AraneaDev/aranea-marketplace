@@ -210,10 +210,10 @@
       "source": {
         "type": "github",
         "repository": "AraneaDev/kanon",
-        "commit": "2c92d3457f3e203072b086e6d6b557c335bb4285"
+        "commit": "9c45837d975ad192dedd8649316576f5c7a22a6e"
       },
       "version": {
-        "pin": "2c92d3457f3e203072b086e6d6b557c335bb4285"
+        "pin": "9c45837d975ad192dedd8649316576f5c7a22a6e"
       },
       "locales": {
         "nl": "/tools/kanon",
@@ -272,10 +272,10 @@
       "source": {
         "type": "github",
         "repository": "AraneaDev/minos",
-        "commit": "ac4c5c632b2e40040588ade9ff93883aba763c5a"
+        "commit": "c866cabdbd3ca6684abb7761aeed736d69e04c1c"
       },
       "version": {
-        "pin": "ac4c5c632b2e40040588ade9ff93883aba763c5a"
+        "pin": "c866cabdbd3ca6684abb7761aeed736d69e04c1c"
       },
       "locales": {
         "nl": "/tools/minos",
