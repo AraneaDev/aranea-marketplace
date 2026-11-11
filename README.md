@@ -9,7 +9,7 @@
 
 [![Validate](https://img.shields.io/github/actions/workflow/status/AraneaDev/aranea-marketplace/validate.yml?label=validate)](https://github.com/AraneaDev/aranea-marketplace/actions/workflows/validate.yml)
 [![Pin bump](https://img.shields.io/github/actions/workflow/status/AraneaDev/aranea-marketplace/bump-pins.yml?label=pin%20bump)](https://github.com/AraneaDev/aranea-marketplace/actions/workflows/bump-pins.yml)
-[![Site](https://img.shields.io/badge/site-aranea--development.nl-0b7285)](https://aranea-development.nl/en/tools)
+[![Site](https://img.shields.io/badge/site-aranea.dev-0b7285)](https://aranea.dev/en/tools)
 [![License](https://img.shields.io/github/license/AraneaDev/aranea-marketplace?label=license&color=yellow)](./LICENSE)
 [![Last commit](https://img.shields.io/github/last-commit/AraneaDev/aranea-marketplace?label=last%20commit)](https://github.com/AraneaDev/aranea-marketplace/commits/main)
 [![Conventional Commits](https://img.shields.io/badge/commits-conventional-fe5196?logo=conventionalcommits&logoColor=white)](https://www.conventionalcommits.org/)
@@ -36,8 +36,8 @@ claude plugin install <name>@aranea
 ```
 
 What there is to install, and what each one does, is on the site:
-[tools](https://aranea-development.nl/en/tools) and
-[skills](https://aranea-development.nl/en/skills). It is not listed here, because a second
+[tools](https://aranea.dev/en/tools) and
+[skills](https://aranea.dev/en/skills). It is not listed here, because a second
 copy of the catalog is the copy that goes stale.
 
 Every GitHub plugin is listed as an `https` git URL pinned to a commit, so Claude Code clones
@@ -166,4 +166,4 @@ MIT. Each plugin carries its own license in its own repository.
 ---
 
 Built by [Tim Schipper](https://tim-schipper.nl/en) and released as open source under
-[Aranea Development](https://aranea-development.nl).
+[aranea.dev](https://aranea.dev).
