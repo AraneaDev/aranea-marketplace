@@ -1,5 +1,12 @@
 {
   "name": "security-audit",
-  "description": "Audit a repository for security weaknesses and supply-chain risks.",
-  "version": "0.1.0"
+  "version": "0.2.1",
+  "description": "Use when performing a security audit, vulnerability assessment, or security review of a codebase. Triggers on requests like \"audit security\", \"find vulnerabilities\", \"security review\", \"check for security issues\", \"OWASP check\", \"pentest the code\", or when preparing for a security engagement.",
+  "author": {
+    "name": "AraneaDev",
+    "url": "https://aranea.dev"
+  },
+  "homepage": "https://aranea.dev/skills/security-audit",
+  "license": "MIT",
+  "keywords": []
 }

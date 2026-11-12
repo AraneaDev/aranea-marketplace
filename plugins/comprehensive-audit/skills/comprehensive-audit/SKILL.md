@@ -37,6 +37,25 @@ Every reported issue must include:
 3. Verification that no guard already handles it elsewhere in the codebase
 4. A concrete remediation with example code
 
+## Bundled fact checker
+
+Use `fact-checker` for the independent verification
+stage below. Its canonical prompt ships in `references/agents/fact-checker.md`.
+In Claude Code, select the plugin-qualified role `comprehensive-audit:fact-checker`.
+In Codex, first read `references/runtime.md`. Pass claim ids, exact subjects,
+artifact paths, revision and this skill's domain-specific verification checklist.
+The verifier reopens the artifacts and returns confirmed, revised, retracted,
+or insufficient evidence, with counterevidence and coverage limits. Keep
+insufficient evidence separate from retracted findings and confirmed results.
+
+Use the native named agent where available. Otherwise load the bundled prompt
+into a fresh general agent. If independent delegation is unavailable, mark it
+blocked and report provisional claims separately. Discovery must not verify itself.
+The parent owns central deduplication, scoring, reporting and approved fixes.
+These inspection-only agents request experiments from the parent: run authorized
+scratch checks there and return raw evidence for independent evaluation. Keep
+all domain-specific checklists, bypass experiments and fix sketches below.
+
 ## Role
 
 Act as a senior software architect, staff engineer, QA lead, security engineer, and performance
@@ -185,6 +204,11 @@ Concrete, scoped changes that raise correctness or maintainability. Not style pr
 rewrites: each one must name the defect it removes.
 
 ## Phase 3: Fact-Check Phase
+
+The parent coordinates this phase centrally. Dispatch the bundled
+`fact-checker` in fresh contexts to apply
+the checklist to each finding or independent batch, then synthesize its verdicts.
+
 
 **This is the most important phase.** For EVERY raw finding:
 
@@ -487,6 +511,6 @@ Agent 5: Architecture + Test Coverage    ─┘
 ```
 
 Each agent returns a structured list of raw findings (file, line, evidence, proposed severity). The
-main session then runs Phase 3 across all findings **centrally**, never per agent, so duplicates and
+main session then coordinates Phase 3 across all findings **centrally**, using independent verifiers, so duplicates and
 cross-lens interactions are caught. Keep the report format identical regardless of how the work was
 split.

@@ -1,0 +1,17 @@
+{
+  "name": "documentation-verification",
+  "version": "0.1.1",
+  "description": "Use when checking whether README instructions, installation guides, configuration references or examples still match the code, or when a documented setup fails for a new reader.",
+  "author": {
+    "name": "AraneaDev",
+    "url": "https://aranea.dev"
+  },
+  "homepage": "https://aranea.dev/skills/documentation-verification",
+  "license": "MIT",
+  "keywords": [
+    "documentation",
+    "installation",
+    "examples",
+    "verification"
+  ]
+}

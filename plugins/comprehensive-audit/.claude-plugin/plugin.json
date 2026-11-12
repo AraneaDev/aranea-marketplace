@@ -1,5 +1,12 @@
 {
   "name": "comprehensive-audit",
-  "description": "Run a comprehensive audit across code, configuration, and documentation.",
-  "version": "0.1.0"
+  "version": "0.2.1",
+  "description": "Exhaustive whole-codebase logic audit performed simultaneously through the lenses of a senior architect, staff engineer, QA lead, security engineer, and performance engineer. Hunts for incorrect behavior, hidden bugs, missing edge cases, race conditions, data-integrity risks, insecure logic, performance traps, architectural flaws, and inconsistencies, fact-checks every finding against the actual source, then produces a structured written report with severity, evidence, recommended fixes, confidence, and a final scorecard (code quality / production readiness / technical debt). The user triages each finding interactively; nothing is edited without approval. Use this whenever the user wants a deep or \"complete\" review of a codebase rather than a quick look. Triggers on \"comprehensive audit\", \"full codebase audit\", \"complete logic audit\", \"audit the whole codebase\", \"find all the bugs\", \"deep code review\", \"exhaustive review\", \"review everything\", \"what's wrong with this codebase\", \"production readiness review\", \"code quality audit\", \"technical debt assessment\", or any request to thoroughly analyze a codebase for correctness, security, performance, and architecture at once. Prefer this over a casual review whenever the user signals they want depth, breadth, or a written findings report.",
+  "author": {
+    "name": "AraneaDev",
+    "url": "https://aranea.dev"
+  },
+  "homepage": "https://aranea.dev/skills/comprehensive-audit",
+  "license": "MIT",
+  "keywords": []
 }

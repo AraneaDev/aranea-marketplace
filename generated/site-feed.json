@@ -200,6 +200,27 @@
       }
     },
     {
+      "id": "documentation-verification",
+      "kind": "skill",
+      "install": "documentation-verification",
+      "display": {
+        "page": "documentation-verification",
+        "readme": "plugins/documentation-verification/skills/documentation-verification/SKILL.md"
+      },
+      "source": {
+        "type": "local",
+        "path": "plugins/documentation-verification"
+      },
+      "version": {},
+      "locales": {
+        "nl": "/nl/skills/documentation-verification",
+        "en": "/skills/documentation-verification"
+      },
+      "installation": {
+        "marketplace": "claude plugin install documentation-verification@aranea"
+      }
+    },
+    {
       "id": "kanon",
       "kind": "plugin",
       "install": "kanon",

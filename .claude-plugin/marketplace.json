@@ -49,6 +49,10 @@
       "source": "./plugins/decompose"
     },
     {
+      "name": "documentation-verification",
+      "source": "./plugins/documentation-verification"
+    },
+    {
       "name": "kanon",
       "source": {
         "source": "url",

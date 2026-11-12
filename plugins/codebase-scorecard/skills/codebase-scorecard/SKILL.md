@@ -25,6 +25,25 @@ approval gate before touching anything, this one has no phase beyond the report:
 there is nothing to approve because nothing is ever applied. Route fixes to
 comprehensive-audit, security-audit, or decompose.
 
+## Bundled fact checker
+
+Use `fact-checker` for the independent verification
+stage below. Its canonical prompt ships in `references/agents/fact-checker.md`.
+In Claude Code, select the plugin-qualified role `codebase-scorecard:fact-checker`.
+In Codex, first read `references/runtime.md`. Pass claim ids, exact subjects,
+artifact paths, revision and this skill's domain-specific verification checklist.
+The verifier reopens the artifacts and returns confirmed, revised, retracted,
+or insufficient evidence, with counterevidence and coverage limits. Keep
+insufficient evidence separate from retracted findings and confirmed results.
+
+Use the native named agent where available. Otherwise load the bundled prompt
+into a fresh general agent. If independent delegation is unavailable, mark it
+blocked and report provisional claims separately. Discovery must not verify itself.
+The parent owns central deduplication, scoring, reporting and approved fixes.
+These inspection-only agents request experiments from the parent: run authorized
+scratch checks there and return raw evidence for independent evaluation. Keep
+all domain-specific checklists, bypass experiments and fix sketches below.
+
 ## Operating Rules
 
 - Score only the in-scope dimensions (default: all 8). A run MAY be scoped to a
@@ -217,8 +236,11 @@ registry grows.
 
 ### Stage 2: Verification (one INDEPENDENT verifier per dimension)
 
-For each dimension dispatch a **separate** subagent (NOT the discovery agent)
-that re-derives every finding from source:
+For each dimension dispatch the bundled `fact-checker`
+as a **separate** subagent (NOT the discovery agent)
+that re-derives every finding from source. The parent executes requested scratch
+experiments and returns raw results; the verifier independently evaluates them
+and still supplies the required High/Medium fix sketch:
 
 - **Strengths get an adversarial *falsify-it* pass:** does the claimed guard /
   pattern / test actually exist? Is it actually enforced? Is it bypassable? A
@@ -234,7 +256,8 @@ that re-derives every finding from source:
 
 Verdict per finding: **confirmed** (keep), **revised** (real but the
 description/severity/weight was wrong, so correct it), or **retracted** (drop).
-Only confirmed and revised findings feed scoring.
+Only confirmed and revised findings feed scoring. Insufficient evidence never
+raises or lowers a score; record the unresolved check and its coverage limit.
 
 #### Draft the fix: required for every High and Medium gap
 
