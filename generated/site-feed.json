@@ -19,8 +19,8 @@
       },
       "version": {},
       "locales": {
-        "nl": "/skills/agent-config-audit",
-        "en": "/en/skills/agent-config-audit"
+        "nl": "/nl/skills/agent-config-audit",
+        "en": "/skills/agent-config-audit"
       },
       "installation": {
         "marketplace": "claude plugin install agent-config-audit@aranea"
@@ -43,8 +43,8 @@
         "pin": "d6958ba04e6aff488e522a40b4c3f30d37313553"
       },
       "locales": {
-        "nl": "/tools/alpheus",
-        "en": "/en/tools/alpheus"
+        "nl": "/nl/tools/alpheus",
+        "en": "/tools/alpheus"
       },
       "installation": {
         "marketplace": "claude plugin install alpheus@aranea"
@@ -62,8 +62,8 @@
       },
       "version": {},
       "locales": {
-        "nl": "/tools/argos",
-        "en": "/en/tools/argos"
+        "nl": "/nl/tools/argos",
+        "en": "/tools/argos"
       },
       "installation": {
         "type": "non-installable"
@@ -86,8 +86,8 @@
         "pin": "a35c0e0b9ac21f5211cb56a307e407d83c926ab5"
       },
       "locales": {
-        "nl": "/tools/ariadne",
-        "en": "/en/tools/ariadne"
+        "nl": "/nl/tools/ariadne",
+        "en": "/tools/ariadne"
       },
       "installation": {
         "marketplace": "claude plugin install ariadne@aranea"
@@ -110,8 +110,8 @@
         "pin": "7a5db73157c81a0ae9c0c71958ada080fd46b6cb"
       },
       "locales": {
-        "nl": "/tools/cassandra",
-        "en": "/en/tools/cassandra"
+        "nl": "/nl/tools/cassandra",
+        "en": "/tools/cassandra"
       },
       "installation": {
         "marketplace": "claude plugin install cassandra@aranea"
@@ -129,8 +129,8 @@
       },
       "version": {},
       "locales": {
-        "nl": "/tools/chaos-mcp",
-        "en": "/en/tools/chaos-mcp"
+        "nl": "/nl/tools/chaos-mcp",
+        "en": "/tools/chaos-mcp"
       },
       "installation": {
         "type": "non-installable"
@@ -150,8 +150,8 @@
       },
       "version": {},
       "locales": {
-        "nl": "/skills/codebase-scorecard",
-        "en": "/en/skills/codebase-scorecard"
+        "nl": "/nl/skills/codebase-scorecard",
+        "en": "/skills/codebase-scorecard"
       },
       "installation": {
         "marketplace": "claude plugin install codebase-scorecard@aranea"
@@ -171,8 +171,8 @@
       },
       "version": {},
       "locales": {
-        "nl": "/skills/comprehensive-audit",
-        "en": "/en/skills/comprehensive-audit"
+        "nl": "/nl/skills/comprehensive-audit",
+        "en": "/skills/comprehensive-audit"
       },
       "installation": {
         "marketplace": "claude plugin install comprehensive-audit@aranea"
@@ -192,11 +192,32 @@
       },
       "version": {},
       "locales": {
-        "nl": "/skills/decompose",
-        "en": "/en/skills/decompose"
+        "nl": "/nl/skills/decompose",
+        "en": "/skills/decompose"
       },
       "installation": {
         "marketplace": "claude plugin install decompose@aranea"
+      }
+    },
+    {
+      "id": "documentation-verification",
+      "kind": "skill",
+      "install": "documentation-verification",
+      "display": {
+        "page": "documentation-verification",
+        "readme": "plugins/documentation-verification/skills/documentation-verification/SKILL.md"
+      },
+      "source": {
+        "type": "local",
+        "path": "plugins/documentation-verification"
+      },
+      "version": {},
+      "locales": {
+        "nl": "/nl/skills/documentation-verification",
+        "en": "/skills/documentation-verification"
+      },
+      "installation": {
+        "marketplace": "claude plugin install documentation-verification@aranea"
       }
     },
     {
@@ -216,8 +237,8 @@
         "pin": "9c45837d975ad192dedd8649316576f5c7a22a6e"
       },
       "locales": {
-        "nl": "/tools/kanon",
-        "en": "/en/tools/kanon"
+        "nl": "/nl/tools/kanon",
+        "en": "/tools/kanon"
       },
       "installation": {
         "marketplace": "claude plugin install kanon@aranea"
@@ -235,8 +256,8 @@
       },
       "version": {},
       "locales": {
-        "nl": "/tools/knossos",
-        "en": "/en/tools/knossos"
+        "nl": "/nl/tools/knossos",
+        "en": "/tools/knossos"
       },
       "installation": {
         "type": "non-installable"
@@ -254,8 +275,8 @@
       },
       "version": {},
       "locales": {
-        "nl": "/tools/mcp-observatory",
-        "en": "/en/tools/mcp-observatory"
+        "nl": "/nl/tools/mcp-observatory",
+        "en": "/tools/mcp-observatory"
       },
       "installation": {
         "type": "non-installable"
@@ -278,8 +299,8 @@
         "pin": "c866cabdbd3ca6684abb7761aeed736d69e04c1c"
       },
       "locales": {
-        "nl": "/tools/minos",
-        "en": "/en/tools/minos"
+        "nl": "/nl/tools/minos",
+        "en": "/tools/minos"
       },
       "installation": {
         "marketplace": "claude plugin install minos@aranea"
@@ -297,8 +318,8 @@
       },
       "version": {},
       "locales": {
-        "nl": "/tools/momus-mcp",
-        "en": "/en/tools/momus-mcp"
+        "nl": "/nl/tools/momus-mcp",
+        "en": "/tools/momus-mcp"
       },
       "installation": {
         "type": "non-installable"
@@ -316,8 +337,8 @@
       },
       "version": {},
       "locales": {
-        "nl": "/tools/nekyia",
-        "en": "/en/tools/nekyia"
+        "nl": "/nl/tools/nekyia",
+        "en": "/tools/nekyia"
       },
       "installation": {
         "type": "non-installable"
@@ -335,8 +356,8 @@
       },
       "version": {},
       "locales": {
-        "nl": "/tools/phrourion",
-        "en": "/en/tools/phrourion"
+        "nl": "/nl/tools/phrourion",
+        "en": "/tools/phrourion"
       },
       "installation": {
         "type": "non-installable"
@@ -356,8 +377,8 @@
       },
       "version": {},
       "locales": {
-        "nl": "/skills/security-audit",
-        "en": "/en/skills/security-audit"
+        "nl": "/nl/skills/security-audit",
+        "en": "/skills/security-audit"
       },
       "installation": {
         "marketplace": "claude plugin install security-audit@aranea"
@@ -380,8 +401,8 @@
         "pin": "6e50034d26590d4c3ea32b04e1a3c832a7211c4a"
       },
       "locales": {
-        "nl": "/tools/timestamps",
-        "en": "/en/tools/timestamps"
+        "nl": "/nl/tools/timestamps",
+        "en": "/tools/timestamps"
       },
       "installation": {
         "marketplace": "claude plugin install timestamps@aranea"

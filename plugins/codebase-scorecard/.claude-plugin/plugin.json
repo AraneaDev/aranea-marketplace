@@ -1,5 +1,12 @@
 {
   "name": "codebase-scorecard",
-  "description": "Evaluate a codebase with a structured engineering scorecard.",
-  "version": "0.1.0"
+  "version": "0.2.0",
+  "description": "Use when the user asks for a graded report card / maturity assessment / quality score of the codebase: \"score how well maintained this is\", \"rate the codebase 1-10 per area\", \"produce a scorecard\", \"how healthy is this code\". Read-only: emits per-dimension scores, rationales, and recommendations, with every strength and weakness independently verified. For finding-and-fixing bugs use comprehensive-audit; for a security sweep use security-audit; for structural decomposition use decompose.",
+  "author": {
+    "name": "AraneaDev",
+    "url": "https://aranea.dev"
+  },
+  "homepage": "https://aranea.dev/skills/codebase-scorecard",
+  "license": "MIT",
+  "keywords": []
 }

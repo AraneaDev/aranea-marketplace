@@ -29,6 +29,25 @@ Every grant is inventoried with the file it came from. Every finding is handed t
 agent told to refute it. Nothing is written that the user did not approve for that specific
 finding, and what is written may only ever narrow the agent's reach.
 
+## Bundled finding verifier
+
+Use `aranea-agent-config-audit-finding-verifier` for the independent verification
+stage below. Its canonical prompt ships in `references/agents/finding-verifier.md`.
+In Claude Code, select the plugin-qualified role `agent-config-audit:aranea-agent-config-audit-finding-verifier`.
+In Codex, first read `references/runtime.md`. Pass claim ids, exact subjects,
+artifact paths, revision and this skill's domain-specific verification checklist.
+The verifier reopens the artifacts and returns confirmed, revised, retracted,
+or insufficient evidence, with counterevidence and coverage limits. Keep
+insufficient evidence separate from retracted findings and confirmed results.
+
+Use the native named agent where available. Otherwise load the bundled prompt
+into a fresh general agent. If independent delegation is unavailable, mark it
+blocked and report provisional claims separately. Discovery must not verify itself.
+The parent owns central deduplication, scoring, reporting and approved fixes.
+These inspection-only agents request experiments from the parent: run authorized
+scratch checks there and return raw evidence for independent evaluation. Keep
+all domain-specific checklists, bypass experiments and fix sketches below.
+
 ## Modes
 
 The skill runs in one of two modes, and the mode is settled before the first file is read.
@@ -317,7 +336,10 @@ Report mode ends at step 6, and it ends by saying so.
 10. **Re-verify.** Re-resolve the configuration, confirm the posture shrank, and confirm
     nothing else moved.
 
-Steps 1, 4, 5 and 8 are the same contract with different subjects.
+Steps 1, 4, 5 and 8 dispatch fresh instances of
+`aranea-agent-config-audit-finding-verifier` with their distinct subjects.
+Keep the separate resolution, finding, count and narrowing checks. A generic
+source review cannot substitute for re-derived counts or effective permissions.
 
 ## Approval is per finding, and an unattended mode is not approval
 

@@ -1,5 +1,12 @@
 {
   "name": "decompose",
-  "description": "Decompose a complex request into an actionable implementation plan.",
-  "version": "0.1.0"
+  "version": "0.2.0",
+  "description": "Structural health scan that finds god classes, bloated modules, and failing logic across a codebase using parallel agents, then fact-checks every finding and generates an approvable decomposition plan. Triggers on \"scan for god classes\", \"find god classes\", \"decompose\", \"structural audit\", \"refactor audit\", \"bloated classes\", \"health scan\", \"failing logic\", \"codebase health\".",
+  "author": {
+    "name": "AraneaDev",
+    "url": "https://aranea.dev"
+  },
+  "homepage": "https://aranea.dev/skills/decompose",
+  "license": "MIT",
+  "keywords": []
 }

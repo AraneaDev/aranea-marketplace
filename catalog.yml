@@ -1,5 +1,10 @@
 marketplace: aranea
 entries:
+  - id: documentation-verification
+    kind: skill
+    install: documentation-verification
+    source: { type: local, path: plugins/documentation-verification }
+    site: { page: documentation-verification, readme: plugins/documentation-verification/skills/documentation-verification/SKILL.md }
   - id: security-audit
     kind: skill
     install: security-audit

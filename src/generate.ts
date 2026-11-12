@@ -49,8 +49,10 @@ export function generateMarketplace(catalog: Catalog): MarketplaceManifest {
 function locales(entry: CatalogEntry): Record<'en' | 'nl', string> {
   const section = entry.kind === 'skill' ? 'skills' : 'tools';
   return {
-    nl: entry.site.locales?.nl ?? `/${section}/${entry.site.page}`,
-    en: entry.site.locales?.en ?? `/en/${section}/${entry.site.page}`,
+    // Catalogs may retain the former Dutch-root / English-/en inputs.
+    // The site now serves English at root and Dutch under /nl.
+    nl: `/nl${(entry.site.locales?.nl ?? `/${section}/${entry.site.page}`).replace(/^\/nl(?=\/)/, '')}`,
+    en: (entry.site.locales?.en ?? `/${section}/${entry.site.page}`).replace(/^\/en(?=\/)/, ''),
   };
 }
 

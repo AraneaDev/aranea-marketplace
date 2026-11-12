@@ -23,6 +23,25 @@ Every finding must include:
 3. Verification that the finding is real and not an artifact of generated code or intentional design
 4. A concrete decomposition or fix proposal with named target components
 
+## Bundled finding verifier
+
+Use `aranea-decompose-finding-verifier` for the independent verification
+stage below. Its canonical prompt ships in `references/agents/finding-verifier.md`.
+In Claude Code, select the plugin-qualified role `decompose:aranea-decompose-finding-verifier`.
+In Codex, first read `references/runtime.md`. Pass claim ids, exact subjects,
+artifact paths, revision and this skill's domain-specific verification checklist.
+The verifier reopens the artifacts and returns confirmed, revised, retracted,
+or insufficient evidence, with counterevidence and coverage limits. Keep
+insufficient evidence separate from retracted findings and confirmed results.
+
+Use the native named agent where available. Otherwise load the bundled prompt
+into a fresh general agent. If independent delegation is unavailable, mark it
+blocked and report provisional claims separately. Discovery must not verify itself.
+The parent owns central deduplication, scoring, reporting and approved fixes.
+These inspection-only agents request experiments from the parent: run authorized
+scratch checks there and return raw evidence for independent evaluation. Keep
+all domain-specific checklists, bypass experiments and fix sketches below.
+
 ## Process
 
 ```dot
@@ -213,6 +232,11 @@ grep -rn "global\.\|window\." src/ | grep "="
 ---
 
 ## Phase 3: Fact-Check Phase
+
+The parent coordinates this phase centrally. Dispatch the bundled
+`aranea-decompose-finding-verifier` in fresh contexts to apply
+the checklist to each finding or independent batch, then synthesize its verdicts.
+
 
 **This is the most important phase. Never skip it.**
 
@@ -501,4 +525,4 @@ Agent 3: Failing Logic Scanner  ─┤
 Agent 4: Coupling Smell Scanner ─┘
 ```
 
-Each agent returns a structured list of raw findings (file, line, evidence, severity). The main session then runs Phase 3 (fact-check) across all findings before generating the report. Do not fact-check per-agent. Do it centrally to catch duplicates and cross-category interactions.
+Each agent returns a structured list of raw findings (file, line, evidence, severity). The main session then coordinates Phase 3 with independent verifiers across all findings before generating the report. Do not fact-check per-agent. Do it centrally to catch duplicates and cross-category interactions.
