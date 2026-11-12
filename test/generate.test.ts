@@ -59,7 +59,7 @@ describe('catalog generation', () => {
           site: {
             page: 'argos-mcp',
             readme: 'https://github.com/AraneaDev/Argos-MCP#readme',
-            locales: { nl: '/tools/argos-mcp', en: '/en/tools/argos-mcp' },
+            locales: { nl: '/nl/tools/argos-mcp', en: '/tools/argos-mcp' },
           },
           installation: { type: 'non-installable' },
         },

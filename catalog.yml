@@ -43,7 +43,7 @@ entries:
   - id: cassandra
     kind: plugin
     install: cassandra
-    source: { type: github, repository: AraneaDev/cassandra, commit: "7a5db73157c81a0ae9c0c71958ada080fd46b6cb" }
+    source: { type: github, repository: AraneaDev/cassandra, commit: "1ba09209a7d578f32d9c2a0eedd26a528fc4106e" }
     site: { page: cassandra, readme: https://github.com/AraneaDev/cassandra#readme }
   - id: timestamps
     kind: plugin
@@ -66,7 +66,7 @@ entries:
     site:
       page: argos
       readme: https://github.com/AraneaDev/argos#readme
-      locales: { nl: /tools/argos, en: /en/tools/argos }
+      locales: { nl: /nl/tools/argos, en: /tools/argos }
     installation: { type: non-installable }
   - id: chaos-mcp
     kind: site
@@ -74,7 +74,7 @@ entries:
     site:
       page: chaos-mcp
       readme: https://github.com/AraneaDev/Chaos-MCP#readme
-      locales: { nl: /tools/chaos-mcp, en: /en/tools/chaos-mcp }
+      locales: { nl: /nl/tools/chaos-mcp, en: /tools/chaos-mcp }
     installation: { type: non-installable }
   - id: knossos
     kind: site
@@ -82,7 +82,7 @@ entries:
     site:
       page: knossos
       readme: https://github.com/AraneaDev/knossos#readme
-      locales: { nl: /tools/knossos, en: /en/tools/knossos }
+      locales: { nl: /nl/tools/knossos, en: /tools/knossos }
     installation: { type: non-installable }
   - id: mcp-observatory
     kind: site
@@ -90,7 +90,7 @@ entries:
     site:
       page: mcp-observatory
       readme: https://mcpobservatory.com
-      locales: { nl: /tools/mcp-observatory, en: /en/tools/mcp-observatory }
+      locales: { nl: /nl/tools/mcp-observatory, en: /tools/mcp-observatory }
     installation: { type: non-installable }
   - id: momus-mcp
     kind: site
@@ -98,7 +98,7 @@ entries:
     site:
       page: momus-mcp
       readme: https://github.com/AraneaDev/Momus-MCP#readme
-      locales: { nl: /tools/momus-mcp, en: /en/tools/momus-mcp }
+      locales: { nl: /nl/tools/momus-mcp, en: /tools/momus-mcp }
     installation: { type: non-installable }
   - id: nekyia
     kind: site
@@ -106,7 +106,7 @@ entries:
     site:
       page: nekyia
       readme: https://github.com/AraneaDev/Nekyia#readme
-      locales: { nl: /tools/nekyia, en: /en/tools/nekyia }
+      locales: { nl: /nl/tools/nekyia, en: /tools/nekyia }
     installation: { type: non-installable }
   - id: phrourion
     kind: site
@@ -114,5 +114,5 @@ entries:
     site:
       page: phrourion
       readme: https://github.com/AraneaDev/phrourion#readme
-      locales: { nl: /tools/phrourion, en: /en/tools/phrourion }
+      locales: { nl: /nl/tools/phrourion, en: /tools/phrourion }
     installation: { type: non-installable }
