@@ -24,6 +24,28 @@ let root: string;
 afterEach(() => root && rmSync(root, { recursive: true, force: true }));
 
 describe('validateCatalog', () => {
+  it.each([
+    [{ nl: '/nl/tools/argos', en: '/tools/argos' }, []],
+    [{ nl: '/tools/argos', en: '/en/tools/argos' }, [
+      'argos.site.locales.nl must be /nl/tools/argos',
+      'argos.site.locales.en must be /tools/argos',
+    ]],
+  ])('validates English root and Dutch prefixed routes: %j', (locales, expected) => {
+    const catalog = loadCatalog(`
+marketplace: aranea
+entries:
+  - id: argos
+    kind: site
+    source: { type: site-only }
+    site:
+      page: argos
+      readme: https://github.com/AraneaDev/argos#readme
+      locales: ${JSON.stringify(locales)}
+    installation: { type: non-installable }
+`);
+    expect(validateCatalog(catalog, '.')).toEqual(expected);
+  });
+
   it('accepts valid local and pinned GitHub entries', () => {
     root = mkdtempSync(join(tmpdir(), 'aranea-marketplace-'));
     mkdirSync(join(root, 'plugins/local-skill/.claude-plugin'), { recursive: true });
@@ -47,7 +69,7 @@ describe('validateCatalog', () => {
           site:
             page: argos-mcp
             readme: https://github.com/AraneaDev/Argos-MCP#readme
-            locales: { nl: /tools/argos-mcp, en: /en/tools/argos-mcp }
+            locales: { nl: /nl/tools/argos-mcp, en: /tools/argos-mcp }
           ${shape}
     `);
     expect(validateCatalog(catalog, root).join('\n')).toMatch(pattern);
@@ -65,7 +87,7 @@ describe('validateCatalog', () => {
           site:
             page: argos-mcp
             readme: https://github.com/AraneaDev/Argos-MCP#readme
-            locales: { nl: /tools/argos-mcp, en: /en/tools/argos-mcp }
+            locales: { nl: /nl/tools/argos-mcp, en: /tools/argos-mcp }
           ${shape}
     `)).toThrow(pattern);
   });

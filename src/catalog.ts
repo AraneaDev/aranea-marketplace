@@ -82,8 +82,8 @@ export function validateCatalog(catalog: Catalog, root: string): ValidationProbl
       if (!entry.installation || !('type' in entry.installation) || entry.installation.type !== 'non-installable') problems.push(`${entry.id}.installation must be non-installable`);
       if (!entry.site.locales?.nl || !entry.site.locales.en) problems.push(`${entry.id}.site.locales must include Dutch and English routes`);
       else {
-        if (entry.site.locales.nl !== `/tools/${entry.site.page}`) problems.push(`${entry.id}.site.locales.nl must be /tools/${entry.site.page}`);
-        if (entry.site.locales.en !== `/en/tools/${entry.site.page}`) problems.push(`${entry.id}.site.locales.en must be /en/tools/${entry.site.page}`);
+        if (entry.site.locales.nl !== `/nl/tools/${entry.site.page}`) problems.push(`${entry.id}.site.locales.nl must be /nl/tools/${entry.site.page}`);
+        if (entry.site.locales.en !== `/tools/${entry.site.page}`) problems.push(`${entry.id}.site.locales.en must be /tools/${entry.site.page}`);
       }
     } else {
       if (!entry.install) problems.push(`${entry.id}.install is missing`);

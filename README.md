@@ -9,7 +9,7 @@
 
 [![Validate](https://img.shields.io/github/actions/workflow/status/AraneaDev/aranea-marketplace/validate.yml?label=validate)](https://github.com/AraneaDev/aranea-marketplace/actions/workflows/validate.yml)
 [![Pin bump](https://img.shields.io/github/actions/workflow/status/AraneaDev/aranea-marketplace/bump-pins.yml?label=pin%20bump)](https://github.com/AraneaDev/aranea-marketplace/actions/workflows/bump-pins.yml)
-[![Site](https://img.shields.io/badge/site-aranea.dev-0b7285)](https://aranea.dev/en/tools)
+[![Site](https://img.shields.io/badge/site-aranea.dev-0b7285)](https://aranea.dev/tools)
 [![License](https://img.shields.io/github/license/AraneaDev/aranea-marketplace?label=license&color=yellow)](./LICENSE)
 [![Last commit](https://img.shields.io/github/last-commit/AraneaDev/aranea-marketplace?label=last%20commit)](https://github.com/AraneaDev/aranea-marketplace/commits/main)
 [![Conventional Commits](https://img.shields.io/badge/commits-conventional-fe5196?logo=conventionalcommits&logoColor=white)](https://www.conventionalcommits.org/)
@@ -36,8 +36,8 @@ claude plugin install <name>@aranea
 ```
 
 What there is to install, and what each one does, is on the site:
-[tools](https://aranea.dev/en/tools) and
-[skills](https://aranea.dev/en/skills). It is not listed here, because a second
+[tools](https://aranea.dev/tools) and
+[skills](https://aranea.dev/skills). It is not listed here, because a second
 copy of the catalog is the copy that goes stale.
 
 Every GitHub plugin is listed as an `https` git URL pinned to a commit, so Claude Code clones
@@ -125,14 +125,14 @@ A plugin in its own repository:
 
 1. Add a `kind: plugin` entry with `source: { type: github, repository: …, commit: "…" }`,
    pinned to the commit of a release.
-2. Give it both site routes, `/tools/<id>` and `/en/tools/<id>`.
+2. Give it the English route `/tools/<id>` and Dutch route `/nl/tools/<id>`.
 3. Put the install markers in its README, and install the README App on the repository.
 
 A skill that lives here:
 
 1. Add `plugins/<id>/.claude-plugin/plugin.json` and `plugins/<id>/skills/<id>/SKILL.md`.
 2. Add a `kind: skill` entry with `source: { type: local, path: plugins/<id> }` and both
-   `/skills/<id>` routes.
+   `/skills/<id>` (English) and `/nl/skills/<id>` (Dutch) routes.
 
 A site-only tool takes `kind: site`, `source: { type: site-only }`, no `install`, and
 `installation: { type: non-installable }`.

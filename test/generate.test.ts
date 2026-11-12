@@ -41,7 +41,7 @@ describe('catalog generation', () => {
       id: 'alpha',
       display: { page: 'alpha', readme: 'skills/alpha/SKILL.md' },
       version: {},
-      locales: { nl: '/skills/alpha', en: '/en/skills/alpha' },
+      locales: { nl: '/nl/skills/alpha', en: '/skills/alpha' },
       installation: { marketplace: 'claude plugin install alpha@aranea' },
     });
     expect(feed.entries[1].version).toEqual({ pin: '0123456789abcdef0123456789abcdef01234567' });
@@ -59,7 +59,7 @@ describe('catalog generation', () => {
           site: {
             page: 'argos-mcp',
             readme: 'https://github.com/AraneaDev/Argos-MCP#readme',
-            locales: { nl: '/tools/argos-mcp', en: '/en/tools/argos-mcp' },
+            locales: { nl: '/nl/tools/argos-mcp', en: '/tools/argos-mcp' },
           },
           installation: { type: 'non-installable' },
         },
@@ -71,7 +71,7 @@ describe('catalog generation', () => {
       id: 'argos-mcp',
       kind: 'site',
       source: { type: 'site-only' },
-      locales: { nl: '/tools/argos-mcp', en: '/en/tools/argos-mcp' },
+      locales: { nl: '/nl/tools/argos-mcp', en: '/tools/argos-mcp' },
       installation: { type: 'non-installable' },
     }));
 
@@ -95,7 +95,7 @@ describe('catalog generation', () => {
       expect(siteEntries).toContainEqual(expect.objectContaining({
         id,
         source: { type: 'site-only' },
-        locales: { nl: `/tools/${id}`, en: `/en/tools/${id}` },
+        locales: { nl: `/nl/tools/${id}`, en: `/tools/${id}` },
         installation: { type: 'non-installable' },
       }));
     }
