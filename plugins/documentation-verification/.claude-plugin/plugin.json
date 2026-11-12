@@ -1,6 +1,6 @@
 {
   "name": "documentation-verification",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Use when checking whether README instructions, installation guides, configuration references or examples still match the code, or when a documented setup fails for a new reader.",
   "author": {
     "name": "AraneaDev",

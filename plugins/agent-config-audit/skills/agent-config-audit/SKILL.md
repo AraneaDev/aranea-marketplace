@@ -29,11 +29,11 @@ Every grant is inventoried with the file it came from. Every finding is handed t
 agent told to refute it. Nothing is written that the user did not approve for that specific
 finding, and what is written may only ever narrow the agent's reach.
 
-## Bundled finding verifier
+## Bundled fact checker
 
-Use `aranea-agent-config-audit-finding-verifier` for the independent verification
-stage below. Its canonical prompt ships in `references/agents/finding-verifier.md`.
-In Claude Code, select the plugin-qualified role `agent-config-audit:aranea-agent-config-audit-finding-verifier`.
+Use `fact-checker` for the independent verification
+stage below. Its canonical prompt ships in `references/agents/fact-checker.md`.
+In Claude Code, select the plugin-qualified role `agent-config-audit:fact-checker`.
 In Codex, first read `references/runtime.md`. Pass claim ids, exact subjects,
 artifact paths, revision and this skill's domain-specific verification checklist.
 The verifier reopens the artifacts and returns confirmed, revised, retracted,
@@ -337,7 +337,7 @@ Report mode ends at step 6, and it ends by saying so.
     nothing else moved.
 
 Steps 1, 4, 5 and 8 dispatch fresh instances of
-`aranea-agent-config-audit-finding-verifier` with their distinct subjects.
+`fact-checker` with their distinct subjects.
 Keep the separate resolution, finding, count and narrowing checks. A generic
 source review cannot substitute for re-derived counts or effective permissions.
 

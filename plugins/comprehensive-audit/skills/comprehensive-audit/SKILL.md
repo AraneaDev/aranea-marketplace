@@ -37,11 +37,11 @@ Every reported issue must include:
 3. Verification that no guard already handles it elsewhere in the codebase
 4. A concrete remediation with example code
 
-## Bundled finding verifier
+## Bundled fact checker
 
-Use `aranea-comprehensive-audit-finding-verifier` for the independent verification
-stage below. Its canonical prompt ships in `references/agents/finding-verifier.md`.
-In Claude Code, select the plugin-qualified role `comprehensive-audit:aranea-comprehensive-audit-finding-verifier`.
+Use `fact-checker` for the independent verification
+stage below. Its canonical prompt ships in `references/agents/fact-checker.md`.
+In Claude Code, select the plugin-qualified role `comprehensive-audit:fact-checker`.
 In Codex, first read `references/runtime.md`. Pass claim ids, exact subjects,
 artifact paths, revision and this skill's domain-specific verification checklist.
 The verifier reopens the artifacts and returns confirmed, revised, retracted,
@@ -206,7 +206,7 @@ rewrites: each one must name the defect it removes.
 ## Phase 3: Fact-Check Phase
 
 The parent coordinates this phase centrally. Dispatch the bundled
-`aranea-comprehensive-audit-finding-verifier` in fresh contexts to apply
+`fact-checker` in fresh contexts to apply
 the checklist to each finding or independent batch, then synthesize its verdicts.
 
 

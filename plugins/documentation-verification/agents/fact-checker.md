@@ -1,5 +1,5 @@
 ---
-name: aranea-codebase-scorecard-finding-verifier
+name: fact-checker
 description: Independently challenge an audit finding, claimed strength, configuration resolution or evidence count before it enters a report.
 tools: Read, Grep, Glob
 model: inherit

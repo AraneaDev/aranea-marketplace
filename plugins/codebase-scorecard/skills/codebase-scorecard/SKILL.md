@@ -25,11 +25,11 @@ approval gate before touching anything, this one has no phase beyond the report:
 there is nothing to approve because nothing is ever applied. Route fixes to
 comprehensive-audit, security-audit, or decompose.
 
-## Bundled finding verifier
+## Bundled fact checker
 
-Use `aranea-codebase-scorecard-finding-verifier` for the independent verification
-stage below. Its canonical prompt ships in `references/agents/finding-verifier.md`.
-In Claude Code, select the plugin-qualified role `codebase-scorecard:aranea-codebase-scorecard-finding-verifier`.
+Use `fact-checker` for the independent verification
+stage below. Its canonical prompt ships in `references/agents/fact-checker.md`.
+In Claude Code, select the plugin-qualified role `codebase-scorecard:fact-checker`.
 In Codex, first read `references/runtime.md`. Pass claim ids, exact subjects,
 artifact paths, revision and this skill's domain-specific verification checklist.
 The verifier reopens the artifacts and returns confirmed, revised, retracted,
@@ -236,7 +236,7 @@ registry grows.
 
 ### Stage 2: Verification (one INDEPENDENT verifier per dimension)
 
-For each dimension dispatch the bundled `aranea-codebase-scorecard-finding-verifier`
+For each dimension dispatch the bundled `fact-checker`
 as a **separate** subagent (NOT the discovery agent)
 that re-derives every finding from source. The parent executes requested scratch
 experiments and returns raw results; the verifier independently evaluates them

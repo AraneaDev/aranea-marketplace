@@ -19,11 +19,11 @@ Every reported vulnerability must include:
 3. Verification that no mitigation already exists elsewhere in the codebase
 4. A concrete remediation with example code
 
-## Bundled finding verifier
+## Bundled fact checker
 
-Use `aranea-security-audit-finding-verifier` for the independent verification
-stage below. Its canonical prompt ships in `references/agents/finding-verifier.md`.
-In Claude Code, select the plugin-qualified role `security-audit:aranea-security-audit-finding-verifier`.
+Use `fact-checker` for the independent verification
+stage below. Its canonical prompt ships in `references/agents/fact-checker.md`.
+In Claude Code, select the plugin-qualified role `security-audit:fact-checker`.
 In Codex, first read `references/runtime.md`. Pass claim ids, exact subjects,
 artifact paths, revision and this skill's domain-specific verification checklist.
 The verifier reopens the artifacts and returns confirmed, revised, retracted,
@@ -127,7 +127,7 @@ Check: security headers (CSP, HSTS, X-Frame-Options)
 ## Phase 3: Fact-Check Phase
 
 The parent coordinates this phase centrally. Dispatch the bundled
-`aranea-security-audit-finding-verifier` in fresh contexts to apply
+`fact-checker` in fresh contexts to apply
 the checklist to each finding or independent batch, then synthesize its verdicts.
 
 

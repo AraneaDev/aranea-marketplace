@@ -1,6 +1,6 @@
 {
   "name": "agent-config-audit",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Use when auditing what a coding agent is allowed to do (\"audit my Claude Code config\", \"what can this agent actually do\", \"check my permissions\", \"is it safe to open this repo with an agent\", \"why does it never ask me anything anymore\"), across permissions, hooks, MCP servers, subagents, skills and instruction files at every scope. Read-only by default; any change it proposes may only narrow what the agent can reach, and is applied one finding at a time on explicit approval.",
   "author": {
     "name": "AraneaDev",

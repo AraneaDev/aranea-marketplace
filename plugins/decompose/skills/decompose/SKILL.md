@@ -23,11 +23,11 @@ Every finding must include:
 3. Verification that the finding is real and not an artifact of generated code or intentional design
 4. A concrete decomposition or fix proposal with named target components
 
-## Bundled finding verifier
+## Bundled fact checker
 
-Use `aranea-decompose-finding-verifier` for the independent verification
-stage below. Its canonical prompt ships in `references/agents/finding-verifier.md`.
-In Claude Code, select the plugin-qualified role `decompose:aranea-decompose-finding-verifier`.
+Use `fact-checker` for the independent verification
+stage below. Its canonical prompt ships in `references/agents/fact-checker.md`.
+In Claude Code, select the plugin-qualified role `decompose:fact-checker`.
 In Codex, first read `references/runtime.md`. Pass claim ids, exact subjects,
 artifact paths, revision and this skill's domain-specific verification checklist.
 The verifier reopens the artifacts and returns confirmed, revised, retracted,
@@ -234,7 +234,7 @@ grep -rn "global\.\|window\." src/ | grep "="
 ## Phase 3: Fact-Check Phase
 
 The parent coordinates this phase centrally. Dispatch the bundled
-`aranea-decompose-finding-verifier` in fresh contexts to apply
+`fact-checker` in fresh contexts to apply
 the checklist to each finding or independent batch, then synthesize its verdicts.
 
 

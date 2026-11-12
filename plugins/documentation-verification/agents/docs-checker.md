@@ -1,5 +1,5 @@
 ---
-name: aranea-documentation-verification-documentation-verifier
+name: docs-checker
 description: Check documentation claims, installation steps, commands and examples against current source and observed behaviour.
 tools: Read, Grep, Glob
 model: inherit
