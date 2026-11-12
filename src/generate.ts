@@ -49,8 +49,8 @@ export function generateMarketplace(catalog: Catalog): MarketplaceManifest {
 function locales(entry: CatalogEntry): Record<'en' | 'nl', string> {
   const section = entry.kind === 'skill' ? 'skills' : 'tools';
   return {
-    nl: entry.site.locales?.nl ?? `/${section}/${entry.site.page}`,
-    en: entry.site.locales?.en ?? `/en/${section}/${entry.site.page}`,
+    nl: entry.site.locales?.nl ?? `/nl/${section}/${entry.site.page}`,
+    en: entry.site.locales?.en ?? `/${section}/${entry.site.page}`,
   };
 }
 
