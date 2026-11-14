@@ -116,3 +116,11 @@ entries:
       readme: https://github.com/AraneaDev/phrourion#readme
       locales: { nl: /nl/tools/phrourion, en: /tools/phrourion }
     installation: { type: non-installable }
+  - id: theseus
+    kind: site
+    source: { type: site-only }
+    site:
+      page: theseus
+      readme: https://github.com/AraneaDev/theseus#readme
+      locales: { nl: /nl/tools/theseus, en: /tools/theseus }
+    installation: { type: non-installable }

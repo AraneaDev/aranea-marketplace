@@ -385,6 +385,25 @@
       }
     },
     {
+      "id": "theseus",
+      "kind": "site",
+      "display": {
+        "page": "theseus",
+        "readme": "https://github.com/AraneaDev/theseus#readme"
+      },
+      "source": {
+        "type": "site-only"
+      },
+      "version": {},
+      "locales": {
+        "nl": "/nl/tools/theseus",
+        "en": "/tools/theseus"
+      },
+      "installation": {
+        "type": "non-installable"
+      }
+    },
+    {
       "id": "timestamps",
       "kind": "plugin",
       "install": "timestamps",
