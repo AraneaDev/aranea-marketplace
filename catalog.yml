@@ -48,7 +48,7 @@ entries:
   - id: timestamps
     kind: plugin
     install: timestamps
-    source: { type: github, repository: AraneaDev/timestamps, commit: "f411c7029405239f8fa022f905e91e6514af4759" }
+    source: { type: github, repository: AraneaDev/timestamps, commit: "57e3b72fb022a949a04489616a8b7cc21ec70be4" }
     site: { page: timestamps, readme: https://github.com/AraneaDev/timestamps#readme }
   - id: kanon
     kind: plugin
