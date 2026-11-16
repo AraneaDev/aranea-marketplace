@@ -414,10 +414,10 @@
       "source": {
         "type": "github",
         "repository": "AraneaDev/timestamps",
-        "commit": "57e3b72fb022a949a04489616a8b7cc21ec70be4"
+        "commit": "e4990c6af3990809d9f2e746cef695f166ff190d"
       },
       "version": {
-        "pin": "57e3b72fb022a949a04489616a8b7cc21ec70be4"
+        "pin": "e4990c6af3990809d9f2e746cef695f166ff190d"
       },
       "locales": {
         "nl": "/nl/tools/timestamps",
